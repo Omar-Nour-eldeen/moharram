@@ -1,0 +1,874 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moharram</title>
+
+    <link rel="icon" href="images/business card back 2.png" type="image/png">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+
+    <!-- AOS Animation CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <!-- PROMO TICKER -->
+    <div class="promo-ticker">
+        <div class="ticker-inner">
+            <span>🚚 شحن مجاني للطلبات فوق 1999 ج.م</span>
+            <span>✨ كود خصم <span class="code-badge">Mo5%</span> يوفر 5% على طلبك</span>
+            <span>🍯 منتجات طبيعية 100% مضمونة الجودة</span>
+            <span>📦 توصيل لجميع محافظات مصر</span>
+            <span>🌿 خبرة أكثر من 3 سنوات في المنتجات الطبيعية</span>
+            <!-- repeat for seamless loop -->
+            <span>🚚 شحن مجاني للطلبات فوق 1999 ج.م</span>
+            <span>✨ كود خصم <span class="code-badge">Mo5%</span> يوفر 5% على طلبك</span>
+            <span>🍯 منتجات طبيعية 100% مضمونة الجودة</span>
+            <span>📦 توصيل لجميع محافظات مصر</span>
+            <span>🌿 خبرة أكثر من 3 سنوات في المنتجات الطبيعية</span>
+        </div>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg py-2 px-4 sticky-top border-bottom"
+        style="background: rgba(255,255,255,0.97); backdrop-filter: blur(14px); box-shadow: 0 2px 18px var(--shadow); z-index: 1030; top: 37px;">
+        <div class="container-fluid">
+            <a class="navbar-brand brand-logo m-0" href="index.html">
+                <img class="rounded-circle" src="images/logo.png" alt="شعار محرم" style="width: 8vh; height: 8vh;">
+                <div class="brand-name d-none d-sm-block">
+                    متجر محرم
+                    <span>منتجات طبيعية أصيلة</span>
+                </div>
+            </a>
+
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse"
+                data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-center" id="mainNav">
+                <ul class="navbar-nav fw-bold gap-lg-3 mt-3 mt-lg-0 text-center">
+                    <li class="nav-item"><a class="nav-link active text-brown-dark" href="index.html#">الرئيسية</a></li>
+                    <li class="nav-item"><a class="nav-link text-brown-dark" href="index.html#products">المنتجات</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link text-brown-dark" href="wishlist.html">المفضلة</a></li>
+                    <li class="nav-item"><a class="nav-link text-brown-dark" href="index.html#social">تواصل معنا</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="header-actions d-flex gap-2 align-items-center mt-3 mt-lg-0 justify-content-center">
+                <a href="wishlist.html" class="header-icon-btn text-decoration-none" title="المفضلة">
+                    <i class="far fa-heart"></i>
+                    <span id="wishlist-counter"
+                        style="position:absolute;top:-4px;left:-4px;background:var(--red);color:white;border-radius:50%;width:18px;height:18px;font-size:10px;font-weight:900;display:none;align-items:center;justify-content:center;">0</span>
+                </a>
+                <button class="header-icon-btn" onclick="openCart()" title="السلة">
+                    <i class="fas fa-shopping-basket"></i>
+                    <span id="cart-counter" style="display:none;align-items:center;justify-content:center;">0</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero position-relative d-flex align-items-center py-5" style="min-height: 75vh;">
+        <!-- Background Image -->
+        <img src="images/عسل زهور البركة.png" class="w-100 h-100 position-absolute top-0 start-0" alt="hero">
+
+        <!-- Black Overlay -->
+        <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark" style="opacity: 0.5;"></div>
+
+        <!-- Content -->
+        <div class="container text-center hero-content position-relative text-white" data-aos="zoom-in">
+            <div class="hero-badge">🌿 طبيعي ١٠٠٪ · مضمون الجودة</div>
+
+            <h1>من أجود <em>المصادر الطبيعية</em></h1>
+            <h1>إلى مائدتك مباشرةً</h1>
+
+            <p class="lead text-white">
+                عسل نحل ، زيت زيتون ، منتجات شعير ، وخلطات طبيعية مختارة بعناية لصحتك وصحة عائلتك
+            </p>
+
+            <div class="hero-btns d-flex justify-content-center gap-3 mt-4">
+                <a href="#products" class="btn-primary text-decoration-none">
+                    <i class="fas fa-store"></i> تسوق الآن
+                </a>
+                <a href="#social" class="btn-outline text-decoration-none">
+                    <i class="fas fa-headset"></i> تواصل معنا
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- TRUST BAR -->
+    <div class="trust-bar py-3">
+        <div class="container">
+            <div class="d-flex justify-content-center flex-wrap gap-4">
+                <div class="trust-item"><i class="fas fa-shield-alt"></i><span>ضمان الجودة</span></div>
+                <div class="trust-item"><i class="fas fa-truck"></i><span>توصيل لكل مصر</span></div>
+                <div class="trust-item"><i class="fas fa-leaf"></i><span>طبيعي ١٠٠٪</span></div>
+                <div class="trust-item"><i class="fas fa-headset"></i><span>دعم ٧ أيام</span></div>
+                <div class="trust-item"><i class="fas fa-undo"></i><span>استرجاع مضمون</span></div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- PRODUCTS -->
+    <section class="container pb-5">
+
+        <!-- FILTER TABS -->
+        <div class="container py-4" id="products">
+            <div class="d-flex justify-content-center flex-wrap gap-2">
+                <button class="filter-tab active bg-brown-dark text-white" onclick="filterCat('all',this)">الكل</button>
+                <button class="filter-tab" onclick="filterCat('honey',this)">🍯 عسل النحل</button>
+                <button class="filter-tab" onclick="filterCat('blends',this)">🌿 الخلطات</button>
+                <button class="filter-tab" onclick="filterCat('olive',this)">🫒 زيت الزيتون</button>
+                <button class="filter-tab" onclick="filterCat('offers',this)">🔥 العروض</button>
+            </div>
+        </div>
+        <!-- عسل النحل -->
+        <div class="section-header d-flex align-items-center gap-3 mt-5 mb-4" data-cat="honey">
+            <h2 class="section-title">🍯 عسل النحل الطبيعي</h2>
+            <div class="section-line"></div>
+            <small class="text-muted text-nowrap" style="font-size:12px;">عبوات ٥٠٠ جرام</small>
+        </div>
+        <div class="row g-4">
+
+            <div class="col-12 col-sm-6 col-lg-3 product-card-container" data-cat="honey" data-aos="fade-up"
+                data-aos-delay="100">
+                <div class="card h-100 product-card border-0">
+                    <div class="product-image"><img src="/images/عسل السدر الجبلي.png" alt="عسل السدر"
+                            onerror="this.parentElement.innerHTML='<span class=ph-icon>🍯</span>'"></div>
+                    <div class="card-body product-body d-flex flex-column">
+                        <div class="product-category">عسل نحل</div>
+                        <h3 class="product-title">عسل نحل السدر الملكي</h3>
+                        <div class="product-stars">★★★★★ <small class="text-muted">(٤.٩)</small></div>
+                        <p class="product-desc flex-grow-1">مقطوف بعناية من أنقى الحقول العشبية، جودة ملكية بكل جرام.
+                        </p>
+                        <div class="product-price-row"><span class="product-price">٧٥٠ ج.م</span><span
+                                class="price-unit">/ ٥٠٠ جم</span></div>
+                        <div class="d-flex gap-2 mt-auto">
+                            <button class="add-to-cart-btn" onclick="addToCart('عسل نحل السدر الملكي (٥٠٠ جم)',750)"><i
+                                    class="fas fa-cart-plus"></i> أضف للسلة</button>
+                            <button class="wishlist-btn" onclick="toggleWish(this)"><i
+                                    class="far fa-heart"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-lg-3 product-card-container" data-cat="honey" data-aos="fade-up"
+                data-aos-delay="200">
+                <div class="card h-100 product-card border-0">
+                    <div class="highlight-badge">🔥 مميز</div>
+                    <div class="product-image"><img src="kashmiri.jpg" alt="عسل السدر الكشميري"
+                            onerror="this.parentElement.innerHTML='<span class=ph-icon>🍯</span>'"></div>
+                    <div class="card-body product-body d-flex flex-column">
+                        <div class="product-category">عسل فاخر</div>
+                        <h3 class="product-title">عسل السدر الكشميري</h3>
+                        <div class="product-stars">★★★★★ <small class="text-muted">(٥.٠)</small></div>
+                        <p class="product-desc flex-grow-1">جودة كشميرية فاخرة ومذاق فريد من أعلى الجبال.</p>
+                        <div class="product-price-row"><span class="product-price">١٢٠٠ ج.م</span><span
+                                class="price-unit">/ ٥٠٠ جم</span></div>
+                        <div class="d-flex gap-2 mt-auto">
+                            <button class="add-to-cart-btn" onclick="addToCart('عسل السدر الكشميري (٥٠٠ جم)',1200)"><i
+                                    class="fas fa-cart-plus"></i> أضف للسلة</button>
+                            <button class="wishlist-btn" onclick="toggleWish(this)"><i
+                                    class="far fa-heart"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-lg-3 product-card-container" data-cat="honey" data-aos="fade-up"
+                data-aos-delay="300">
+                <div class="card h-100 product-card border-0">
+                    <div class="product-image"><img src="images/عسل زهور البركة.png" alt="عسل حبة البركة"
+                            onerror="this.parentElement.innerHTML='<span class=ph-icon>🍯</span>'"></div>
+                    <div class="card-body product-body d-flex flex-column">
+                        <div class="product-category">عسل نحل</div>
+                        <h3 class="product-title">عسل زهور حبة البركة</h3>
+                        <div class="product-stars">★★★★☆ <small class="text-muted">(٤.٧)</small></div>
+                        <p class="product-desc flex-grow-1">غني بالفوائد الطبيعية، يجمع طاقة زهور حبة البركة المباركة.
+                        </p>
+                        <div class="product-price-row"><span class="product-price">١٦٥ ج.م</span><span
+                                class="price-unit">/ ٥٠٠ جم</span></div>
+                        <div class="d-flex gap-2 mt-auto">
+                            <button class="add-to-cart-btn" onclick="addToCart('عسل حبة البركة (٥٠٠ جم)',165)"><i
+                                    class="fas fa-cart-plus"></i> أضف للسلة</button>
+                            <button class="wishlist-btn" onclick="toggleWish(this)"><i
+                                    class="far fa-heart"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-lg-3 product-card-container" data-cat="honey" data-aos="fade-up"
+                data-aos-delay="400">
+                <div class="card h-100 product-card border-0">
+                    <div class="product-image"><img src="images/عسل البرسيم.png" alt="عسل البرسيم"
+                            onerror="this.parentElement.innerHTML='<span class=ph-icon>🍯</span>'"></div>
+                    <div class="card-body product-body d-flex flex-column">
+                        <div class="product-category">عسل نحل</div>
+                        <h3 class="product-title">عسل زهور البرسيم</h3>
+                        <div class="product-stars">★★★★☆ <small class="text-muted">(٤.٦)</small></div>
+                        <p class="product-desc flex-grow-1">طعم خفيف ومحبب للجميع، مثالي للأطفال والاستخدام اليومي.</p>
+                        <div class="product-price-row"><span class="product-price">١٦٠ ج.م</span><span
+                                class="price-unit">/ ٥٠٠ جم</span></div>
+                        <div class="d-flex gap-2 mt-auto">
+                            <button class="add-to-cart-btn" onclick="addToCart('عسل البرسيم (٥٠٠ جم)',160)"><i
+                                    class="fas fa-cart-plus"></i> أضف للسلة</button>
+                            <button class="wishlist-btn" onclick="toggleWish(this)"><i
+                                    class="far fa-heart"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-lg-3 product-card-container" data-cat="honey" data-aos="fade-up"
+                data-aos-delay="100">
+                <div class="card h-100 product-card border-0">
+                    <div class="product-image"><img src="images/عسل الموالح.png" alt="عسل الموالح"
+                            onerror="this.parentElement.innerHTML='<span class=ph-icon>🍊</span>'"></div>
+                    <div class="card-body product-body d-flex flex-column">
+                        <div class="product-category">عسل نحل</div>
+                        <h3 class="product-title">عسل زهور الموالح</h3>
+                        <div class="product-stars">★★★★☆ <small class="text-muted">(٤.٥)</small></div>
+                        <p class="product-desc flex-grow-1">مذاق منعش وغني بفيتامين سي من زهور الحمضيات.</p>
+                        <div class="product-price-row"><span class="product-price">١٦٠ ج.م</span><span
+                                class="price-unit">/ ٥٠٠ جم</span></div>
+                        <div class="d-flex gap-2 mt-auto">
+                            <button class="add-to-cart-btn" onclick="addToCart('عسل الموالح (٥٠٠ جم)',160)"><i
+                                    class="fas fa-cart-plus"></i> أضف للسلة</button>
+                            <button class="wishlist-btn" onclick="toggleWish(this)"><i
+                                    class="far fa-heart"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-lg-3 product-card-container" data-cat="honey" data-aos="fade-up"
+                data-aos-delay="200">
+                <div class="card h-100 product-card border-0">
+                    <div class="product-image"><img src="images/" alt="عسل الينسون"
+                            onerror="this.parentElement.innerHTML='<span class=ph-icon>🌱</span>'"></div>
+                    <div class="card-body product-body d-flex flex-column">
+                        <div class="product-category">عسل نحل</div>
+                        <h3 class="product-title">عسل زهور الينسون</h3>
+                        <div class="product-stars">★★★★☆ <small class="text-muted">(٤.٦)</small></div>
+                        <p class="product-desc flex-grow-1">طعم مميز وفوائد تنفسية عظيمة، صديق الجهاز التنفسي.</p>
+                        <div class="product-price-row"><span class="product-price">٢٠٠ ج.م</span><span
+                                class="price-unit">/ ٥٠٠ جم</span></div>
+                        <div class="d-flex gap-2 mt-auto">
+                            <button class="add-to-cart-btn" onclick="addToCart('عسل الينسون (٥٠٠ جم)',200)"><i
+                                    class="fas fa-cart-plus"></i> أضف للسلة</button>
+                            <button class="wishlist-btn" onclick="toggleWish(this)"><i
+                                    class="far fa-heart"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-lg-3 product-card-container" data-cat="honey" data-aos="fade-up"
+                data-aos-delay="300">
+                <div class="card h-100 product-card border-0">
+                    <div class="product-image"><img src="nuts-honey.jpg" alt="عسل بالمكسرات"
+                            onerror="this.parentElement.innerHTML='<span class=ph-icon>🥜</span>'"></div>
+                    <div class="card-body product-body d-flex flex-column">
+                        <div class="product-category">عسل مميز</div>
+                        <h3 class="product-title">عسل نحل بالمكسرات</h3>
+                        <div class="product-stars">★★★★★ <small class="text-muted">(٤.٨)</small></div>
+                        <p class="product-desc flex-grow-1">مزيج الطاقة الطبيعي، عسل ومكسرات مختارة في عبوة فاخرة.</p>
+                        <div class="product-price-row"><span class="product-price">٣٥٠ ج.م</span><span
+                                class="price-unit">/ ٥٠٠ جم</span></div>
+                        <div class="d-flex gap-2 mt-auto">
+                            <button class="add-to-cart-btn" onclick="addToCart('عسل بالمكسرات (٥٠٠ جم)',350)"><i
+                                    class="fas fa-cart-plus"></i> أضف للسلة</button>
+                            <button class="wishlist-btn" onclick="toggleWish(this)"><i
+                                    class="far fa-heart"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- الخلطات -->
+        <div class="section-header d-flex align-items-center gap-3 mt-5 mb-4" data-cat="blends">
+            <h2 class="section-title">🌿 الخلطات والمنتجات الطبيعية</h2>
+            <div class="section-line"></div>
+        </div>
+        <div class="row g-4">
+
+            <div class="col-12 col-sm-6 col-lg-3 product-card-container" data-cat="blends" data-aos="fade-up"
+                data-aos-delay="100">
+                <div class="card h-100 product-card border-0">
+                    <div class="highlight-badge">⭐ الأكثر مبيعاً</div>
+                    <div class="product-image"><img src="images/" alt="المختوم الفلسطيني"
+                            onerror="this.parentElement.innerHTML='<span class=ph-icon>🫙</span>'"></div>
+                    <div class="card-body product-body d-flex flex-column">
+                        <div class="product-category">خلطة فاخرة</div>
+                        <h3 class="product-title">المختوم الفلسطيني</h3>
+                        <div class="product-stars">★★★★★ <small class="text-muted">(٤.٩)</small></div>
+                        <p class="product-desc flex-grow-1">مزيج فاخر: عسل، حبة البركة، سمسم، مكسرات، تمر وزيت زيتون.
+                        </p>
+                        <div class="product-price-row"><span class="product-price">٣٥٠ ج.م</span><span
+                                class="price-unit">/ ٥٠٠ جم</span></div>
+                        <div class="d-flex gap-2 mt-auto">
+                            <button class="add-to-cart-btn" onclick="addToCart('المختوم الفلسطيني (٥٠٠ جم)',350)"><i
+                                    class="fas fa-cart-plus"></i> أضف للسلة</button>
+                            <button class="wishlist-btn" onclick="toggleWish(this)"><i
+                                    class="far fa-heart"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-lg-3 product-card-container" data-cat="blends" data-aos="fade-up"
+                data-aos-delay="200">
+                <div class="card h-100 product-card border-0">
+                    <div class="product-image"><img src="zaatar.jpg" alt="خلطة الزعتر"
+                            onerror="this.parentElement.innerHTML='<span class=ph-icon>🌿</span>'"></div>
+                    <div class="card-body product-body d-flex flex-column">
+                        <div class="product-category">خلطة</div>
+                        <h3 class="product-title">خلطة الزعتر الفلسطينية</h3>
+                        <div class="product-stars">★★★★☆ <small class="text-muted">(٤.٧)</small></div>
+                        <p class="product-desc flex-grow-1">طعم أصيل للإفطار اليومي المميز، وصفة فلسطينية تقليدية.</p>
+                        <div class="product-price-row"><span class="product-price">١٥٠ ج.م</span></div>
+                        <div class="d-flex gap-2 mt-auto">
+                            <button class="add-to-cart-btn" onclick="addToCart('خلطة الزعتر الفلسطينية',150)"><i
+                                    class="fas fa-cart-plus"></i> أضف للسلة</button>
+                            <button class="wishlist-btn" onclick="toggleWish(this)"><i
+                                    class="far fa-heart"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-lg-3 product-card-container" data-cat="blends" data-aos="fade-up"
+                data-aos-delay="300">
+                <div class="card h-100 product-card border-0">
+                    <div class="product-image"><img src="images/عسل الخلطة الملكية.png" alt="خلطة الملكي"
+                            onerror="this.parentElement.innerHTML='<span class=ph-icon>👑</span>'"></div>
+                    <div class="card-body product-body d-flex flex-column">
+                        <div class="product-category">خلطة للرجال</div>
+                        <h3 class="product-title">خلطة العسل الملكي</h3>
+                        <div class="product-stars">★★★★★ <small class="text-muted">(٥.٠)</small></div>
+                        <p class="product-desc flex-grow-1">تركيبة خاصة لتعزيز طاقة الرجال وحيويتهم بشكل طبيعي.</p>
+                        <div class="product-price-row"><span class="product-price">١٠٠٠ ج.م</span></div>
+                        <div class="d-flex gap-2 mt-auto">
+                            <button class="add-to-cart-btn" onclick="addToCart('خلطة العسل الملكي للرجال',1000)"><i
+                                    class="fas fa-cart-plus"></i> أضف للسلة</button>
+                            <button class="wishlist-btn" onclick="toggleWish(this)"><i
+                                    class="far fa-heart"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-lg-3 product-card-container" data-cat="blends" data-aos="fade-up"
+                data-aos-delay="400">
+                <div class="card h-100 product-card border-0">
+                    <div class="product-image"><img src="barley.jpg" alt="منتجات الشعير"
+                            onerror="this.parentElement.innerHTML='<span class=ph-icon>🌾</span>'"></div>
+                    <div class="card-body product-body d-flex flex-column">
+                        <div class="product-category">حبوب طبيعية</div>
+                        <h3 class="product-title">منتجات الشعير الطبيعي</h3>
+                        <div class="product-stars">★★★★☆ <small class="text-muted">(٤.٥)</small></div>
+                        <p class="product-desc flex-grow-1">دقيق وحبوب شعير بلدي صافي للأنظمة الغذائية الصحية.</p>
+                        <div class="product-price-row"><span class="product-price">٨٥ ج.م</span><span
+                                class="price-unit">/ كيلو</span></div>
+                        <div class="d-flex gap-2 mt-auto">
+                            <button class="add-to-cart-btn" onclick="addToCart('منتجات الشعير (١ كيلو)',85)"><i
+                                    class="fas fa-cart-plus"></i> أضف للسلة</button>
+                            <button class="wishlist-btn" onclick="toggleWish(this)"><i
+                                    class="far fa-heart"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- زيت الزيتون -->
+        <div class="section-header d-flex align-items-center gap-3 mt-5 mb-4" data-cat="olive">
+            <h2 class="section-title">🫒 زيت الزيتون البكر الممتاز</h2>
+            <div class="section-line"></div>
+        </div>
+        <div class="row g-4">
+
+            <div class="col-12 col-sm-6 col-lg-3 product-card-container" data-cat="olive" data-aos="fade-up"
+                data-aos-delay="100">
+                <div class="card h-100 product-card border-0">
+                    <div class="product-image"><img src="images/زيت زيتون 1L.png" alt="زيت زيتون 1 لتر"
+                            onerror="this.parentElement.innerHTML='<span class=ph-icon>🫒</span>'"></div>
+                    <div class="card-body product-body d-flex flex-column">
+                        <div class="product-category">زيت زيتون بكر 1 لتر</div>
+                        <h3 class="product-title">زيت زيتون بكر ممتاز (١ لتر)</h3>
+                        <div class="product-stars">★★★★★ <small class="text-muted">(٤.٩)</small></div>
+                        <p class="product-desc flex-grow-1">عصرة أولى على البارد، طبيعي ١٠٠٪، حموضة منخفضة جداً.</p>
+                        <div class="product-price-row"><span class="product-price">٧٠٠ ج.م</span><span
+                                class="price-unit">/ لتر</span></div>
+                        <div class="d-flex gap-2 mt-auto">
+                            <button class="add-to-cart-btn" onclick="addToCart('زيت زيتون بكر ممتاز (١ لتر)',700)"><i
+                                    class="fas fa-cart-plus"></i> أضف للسلة</button>
+                            <button class="wishlist-btn" onclick="toggleWish(this)"><i
+                                    class="far fa-heart"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-lg-3 product-card-container" data-cat="olive" data-aos="fade-up"
+                data-aos-delay="200">
+                <div class="card h-100 product-card border-0">
+                    <div class="product-image"><img src="images/زيت زيتون 500ml.png" alt="زيت زيتون نصف لتر"
+                            onerror="this.parentElement.innerHTML='<span class=ph-icon>🫒</span>'"></div>
+                    <div class="card-body product-body d-flex flex-column">
+                        <div class="product-category">زيت زيتون بكر 500 مل</div>
+                        <h3 class="product-title">زيت زيتون بكر ممتاز (٥٠٠ مل)</h3>
+                        <div class="product-stars">★★★★★ <small class="text-muted">(٤.٩)</small></div>
+                        <p class="product-desc flex-grow-1">عصرة أولى على البارد، مناسب للاستخدام الشخصي اليومي.</p>
+                        <div class="product-price-row"><span class="product-price">٣٥٠ ج.م</span><span
+                                class="price-unit">/ ٥٠٠ مل</span></div>
+                        <div class="d-flex gap-2 mt-auto">
+                            <button class="add-to-cart-btn" onclick="addToCart('زيت زيتون بكر ممتاز (٥٠٠ مل)',350)"><i
+                                    class="fas fa-cart-plus"></i> أضف للسلة</button>
+                            <button class="wishlist-btn" onclick="toggleWish(this)"><i
+                                    class="far fa-heart"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-lg-3 product-card-container" data-cat="olive" data-aos="fade-up"
+                data-aos-delay="300">
+                <div class="card h-100 product-card border-0">
+                    <div class="product-image"><img src="images/عرض زيت الزيتون.png" alt="جركن زيت زيتون"
+                            onerror="this.parentElement.innerHTML='<span class=ph-icon>🏺</span>'"></div>
+                    <div class="card-body product-body d-flex flex-column">
+                        <div class="product-category">حجم عائلي</div>
+                        <h3 class="product-title">زيت زيتون (جركن عائلي)</h3>
+                        <div class="product-stars">★★★★★ <small class="text-muted">(٤.٨)</small></div>
+                        <p class="product-desc flex-grow-1">حجم التوفير العائلي الاقتصادي، بكر ممتاز بأفضل سعر للكيلو.
+                        </p>
+                        <div class="product-price-row"><span class="product-price">٣٢٥٠ ج.م</span><span
+                                class="price-unit">/ ٣.٥ لتر</span></div>
+                        <div class="d-flex gap-2 mt-auto">
+                            <button class="add-to-cart-btn" onclick="addToCart('زيت زيتون جركن (٣.٥ لتر)',3250)"><i
+                                    class="fas fa-cart-plus"></i> أضف للسلة</button>
+                            <button class="wishlist-btn" onclick="toggleWish(this)"><i
+                                    class="far fa-heart"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- العروض -->
+        <div class="section-header d-flex align-items-center gap-3 mt-5 mb-4" data-cat="offers">
+            <h2 class="section-title">🔥 المجموعات وعروض التوفير</h2>
+            <div class="section-line"></div>
+        </div>
+        <div class="row g-4">
+
+            <div class="col-12 col-sm-6 col-lg-3 product-card-container" data-cat="offers" data-aos="fade-up"
+                data-aos-delay="100">
+                <div class="card h-100 product-card border-0">
+                    <div class="product-image"><img src="family-group.jpg" alt="مجموعة الأسرة"
+                            onerror="this.parentElement.innerHTML='<span class=ph-icon>👨‍👩‍👧‍👦</span>'"></div>
+                    <div class="card-body product-body d-flex flex-column">
+                        <div class="product-category">مجموعة متكاملة</div>
+                        <h3 class="product-title">مجموعة الأسرة والطفل</h3>
+                        <div class="product-stars">★★★★★ <small class="text-muted">(٤.٨)</small></div>
+                        <p class="product-desc flex-grow-1">مجموعة مثالية لصحة عائلتك، منتخبة للكبار والصغار.</p>
+                        <div class="product-price-row"><span class="product-price">٤٥٠ ج.م</span></div>
+                        <div class="d-flex gap-2 mt-auto">
+                            <button class="add-to-cart-btn" onclick="addToCart('مجموعة الأسرة والطفل',450)"><i
+                                    class="fas fa-cart-plus"></i> أضف للسلة</button>
+                            <button class="wishlist-btn" onclick="toggleWish(this)"><i
+                                    class="far fa-heart"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-lg-3 product-card-container" data-cat="offers" data-aos="fade-up"
+                data-aos-delay="200">
+                <div class="card h-100 product-card border-0">
+                    <div class="product-image"><img src="health-group.jpg" alt="المجموعة الصحية"
+                            onerror="this.parentElement.innerHTML='<span class=ph-icon>💊</span>'"></div>
+                    <div class="card-body product-body d-flex flex-column">
+                        <div class="product-category">مجموعة صحية</div>
+                        <h3 class="product-title">المجموعة الصحية الفعالة</h3>
+                        <div class="product-stars">★★★★★ <small class="text-muted">(٤.٩)</small></div>
+                        <p class="product-desc flex-grow-1">عسل ينسون، شمر، وزعتر بري، لمناعة قوية طوال العام.</p>
+                        <div class="product-price-row"><span class="product-price">٦٥٠ ج.م</span></div>
+                        <div class="d-flex gap-2 mt-auto">
+                            <button class="add-to-cart-btn" onclick="addToCart('المجموعة الصحية الفعالة',650)"><i
+                                    class="fas fa-cart-plus"></i> أضف للسلة</button>
+                            <button class="wishlist-btn" onclick="toggleWish(this)"><i
+                                    class="far fa-heart"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-lg-3 product-card-container" data-cat="offers" data-aos="fade-up"
+                data-aos-delay="300">
+                <div class="card h-100 product-card border-0">
+                    <div class="product-image"><img src="herbs-group.jpg" alt="مجموعة الأعشاب"
+                            onerror="this.parentElement.innerHTML='<span class=ph-icon>🌿</span>'"></div>
+                    <div class="card-body product-body d-flex flex-column">
+                        <div class="product-category">مجموعة أعشاب</div>
+                        <h3 class="product-title">مجموعة الأعشاب المتكاملة</h3>
+                        <div class="product-stars">★★★★☆ <small class="text-muted">(٤.٧)</small></div>
+                        <p class="product-desc flex-grow-1">عسل بردقوش، حبة البركة، وعسل الأعشاب الجبلية.</p>
+                        <div class="product-price-row"><span class="product-price">٩٠٠ ج.م</span></div>
+                        <div class="d-flex gap-2 mt-auto">
+                            <button class="add-to-cart-btn" onclick="addToCart('مجموعة الأعشاب المتكاملة',900)"><i
+                                    class="fas fa-cart-plus"></i> أضف للسلة</button>
+                            <button class="wishlist-btn" onclick="toggleWish(this)"><i
+                                    class="far fa-heart"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-lg-3 product-card-container" data-cat="offers" data-aos="fade-up"
+                data-aos-delay="400">
+                <div class="card h-100 product-card border-2 border-danger">
+                    <div class="discount-tag">🔥 وفر ٣٥٠ ج.م</div>
+                    <div class="product-image"><img src="offer-olive.jpg" alt="عرض الزيت"
+                            onerror="this.parentElement.innerHTML='<span class=ph-icon>🫒</span>'"></div>
+                    <div class="card-body product-body d-flex flex-column">
+                        <div class="product-category">عرض محدود</div>
+                        <h3 class="product-title">عرض التوفير الأكبر</h3>
+                        <div class="product-stars">★★★★★ <small class="text-muted">(٥.٠)</small></div>
+                        <p class="product-desc flex-grow-1">٣ لتر زيت زيتون + نصف لتر هدية مجانية!</p>
+                        <div class="product-price-row">
+                            <span class="old-price">٢٤٥٠ ج.م</span>
+                            <span class="product-price text-danger">٢١٠٠ ج.م</span>
+                        </div>
+                        <div class="d-flex gap-2 mt-auto">
+                            <button class="add-to-cart-btn"
+                                onclick="addToCart('عرض التوفير (٣ لتر زيت + نصف هدية)',2100)"><i
+                                    class="fas fa-cart-plus"></i> أضف للسلة</button>
+                            <button class="wishlist-btn" onclick="toggleWish(this)"><i
+                                    class="far fa-heart"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-lg-3 product-card-container" data-cat="offers" data-aos="fade-up"
+                data-aos-delay="500">
+                <div class="card h-100 product-card border-2 border-danger">
+                    <div class="discount-tag">⚡ عرض</div>
+                    <div class="product-image"><img src="offer-mix.jpg" alt="عرض عسل وزيت"
+                            onerror="this.parentElement.innerHTML='<span class=ph-icon>🍯</span>'"></div>
+                    <div class="card-body product-body d-flex flex-column">
+                        <div class="product-category">عرض مميز</div>
+                        <h3 class="product-title">عرض الكيلو الذهبي</h3>
+                        <div class="product-stars">★★★★★ <small class="text-muted">(٤.٩)</small></div>
+                        <p class="product-desc flex-grow-1">كيلو عسل طبيعي + كيلو زيت زيتون بكر، الكومبو المثالي.</p>
+                        <div class="product-price-row"><span class="product-price text-danger">٩٩٩ ج.م</span></div>
+                        <div class="d-flex gap-2 mt-auto">
+                            <button class="add-to-cart-btn" onclick="addToCart('عرض الكيلو (عسل + زيت)',999)"><i
+                                    class="fas fa-cart-plus"></i> أضف للسلة</button>
+                            <button class="wishlist-btn" onclick="toggleWish(this)"><i
+                                    class="far fa-heart"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SOCIAL SECTION -->
+    <section class="social-section py-5" id="social" data-aos="fade-up">
+        <div class="container">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <h2>تابعنا وتواصل معنا</h2>
+                <p>نحن هنا لمساعدتك وللإجابة على كل استفساراتك في أي وقت</p>
+            </div>
+            <div class="row g-5 align-items-center">
+
+                <!-- Contact Form -->
+                <div class="col-12" data-aos="fade-up" data-aos-delay="100">
+                    <div class="bg-white p-4 p-md-5 rounded-4 shadow-sm text-start" style="color: var(--brown-dark);">
+                        <h3 class="fw-bold mb-4 fs-4 text-center">أرسل لنا رسالة</h3>
+                        <form id="contactForm" onsubmit="sendContactMsg(event)" novalidate>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold small text-muted">الاسم</label>
+                                <input type="text" id="contact-name"
+                                    class="form-control form-control-lg bg-light border-0" placeholder="اسمك الكريم">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold small text-muted">رقم الهاتف</label>
+                                <input type="tel" id="contact-phone"
+                                    class="form-control form-control-lg bg-light border-0" placeholder="01XXXXXXXXX" maxlength="11">
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label fw-bold small text-muted">الرسالة</label>
+                                <textarea id="contact-msg" class="form-control form-control-lg bg-light border-0"
+                                    rows="4" placeholder="اكتب استفسارك هنا..."></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100 btn-lg rounded-pill fw-bold"
+                                style="font-size:15px; padding: 14px;">
+                                إرسال الرسالة عبر واتساب <i class="fab fa-whatsapp ms-1 fs-5"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Social Links -->
+                <div class="col-12 mt-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="d-flex gap-3 justify-content-center flex-wrap">
+
+                        <a href="https://wa.me/201067986822" target="_blank" rel="noopener"
+                            class="social-float-btn sfb-wa">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+
+                        <a href="https://www.instagram.com/moharram_0?igsh=MW5lcDI4M2QwaGN0dQ==" target="_blank"
+                            rel="noopener" class="social-float-btn sfb-ig">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+
+                        <a href="https://www.facebook.com/share/1JJwNnuZjP/" target="_blank" rel="noopener"
+                            class="social-float-btn sfb-fb">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+
+                        <a href="https://youtube.com/@ebrahimmoharram9500?si=176t-Mvjx9IpLmsy" target="_blank"
+                            rel="noopener" class="social-float-btn sfb-yt">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+
+                        <a href="https://www.tiktok.com/@moharram022?_r=1&_t=ZS-96IgbrUUruX" target="_blank"
+                            rel="noopener" class="social-float-btn sfb-tk">
+                            <i class="fab fa-tiktok"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="pt-5 pb-3">
+        <div class="container">
+            <div class="row g-4 mb-4">
+                <div class="col-12 col-md-6 col-lg-3 footer-col">
+                    <h4>متجر محرم</h4>
+                    <p>منتجات طبيعية أصيلة بجودة مضمونة، نصل إليك في كل محافظات مصر.</p>
+                    <p class="mt-2 text-brown-mid">📍 القاهرة، مصر</p>
+                </div>
+                <div class="col-12 col-md-6 col-lg-3 footer-col">
+                    <h4>روابط سريعة</h4>
+                    <a href="#products">المنتجات</a>
+                    <a href="#social">تواصل معنا</a>
+                    <a href="https://wa.me/201067986822" target="_blank">اطلب الآن عبر واتساب</a>
+                </div>
+                <div class="col-12 col-md-6 col-lg-3 footer-col">
+                    <h4>خدمة العملاء</h4>
+                    <a href="https://wa.me/201067986822" target="_blank">واتساب: 01067986822</a>
+                    <a href="tel:+201067986822">اتصل: 01067986822</a>
+                    <p class="mt-2">متاحون ٧ أيام أسبوعياً</p>
+                </div>
+                <div class="col-12 col-md-6 col-lg-3 footer-col">
+                    <h4>تابعنا</h4>
+                    <a href="https://www.instagram.com/moharram_0?igsh=MW5lcDI4M2QwaGN0dQ=="
+                        target="_blank">إنستاجرام</a>
+                    <a href="https://www.facebook.com/share/1JJwNnuZjP/" target="_blank">فيسبوك</a>
+                    <a href="https://youtube.com/@ebrahimmoharram9500?si=176t-Mvjx9IpLmsy" target="_blank">يوتيوب</a>
+                    <a href="https://www.tiktok.com/@moharram022?_r=1&_t=ZS-96IgbrUUruX" target="_blank">تيك توك</a>
+                </div>
+            </div>
+            <div class="footer-bottom mt-4">
+                <p class="mb-0">
+                    <i class="fa-regular fa-copyright"></i>
+                    2026 متجر محرم للمنتجات الطبيعية · جميع الحقوق محفوظة
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- FLOATING CART -->
+    <button class="float-cart-btn" onclick="openCart()">
+        <i class="fas fa-shopping-basket"></i>
+        <span id="float-cart-counter" style="display:none;align-items:center;justify-content:center;">0</span>
+    </button>
+
+    <!-- SOCIAL FLOAT — زر واحد يفتح/يغلق القائمة -->
+    <div class="social-float">
+        <div class="social-links" id="social-links">
+            <a href="https://www.tiktok.com/@moharram022?_r=1&_t=ZS-96IgbrUUruX" target="_blank" rel="noopener"
+                class="social-float-btn sfb-tk">
+                <i class="fab fa-tiktok"></i><span class="tooltip">تيك توك</span>
+            </a>
+            <a href="https://youtube.com/@ebrahimmoharram9500?si=176t-Mvjx9IpLmsy" target="_blank" rel="noopener"
+                class="social-float-btn sfb-yt">
+                <i class="fab fa-youtube"></i><span class="tooltip">يوتيوب</span>
+            </a>
+            <a href="https://www.facebook.com/share/1JJwNnuZjP/" target="_blank" rel="noopener"
+                class="social-float-btn sfb-fb">
+                <i class="fab fa-facebook"></i><span class="tooltip">فيسبوك</span>
+            </a>
+            <a href="https://www.instagram.com/moharram_0?igsh=MW5lcDI4M2QwaGN0dQ==" target="_blank" rel="noopener"
+                class="social-float-btn sfb-ig">
+                <i class="fab fa-instagram"></i><span class="tooltip">إنستاجرام</span>
+            </a>
+            <a href="https://wa.me/201067986822" target="_blank" rel="noopener" class="social-float-btn sfb-wa">
+                <i class="fab fa-whatsapp"></i><span class="tooltip">واتساب</span>
+            </a>
+        </div>
+        <button class="social-toggle-btn" id="social-toggle-btn" onclick="toggleSocial()" title="تواصل معنا">
+            <i class="fas fa-share-alt toggle-icon"></i>
+        </button>
+    </div>
+
+    <!-- BOOTSTRAP OFFCANVAS CART -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="cartOffcanvas" aria-labelledby="cartOffcanvasLabel"
+        style="width: 470px; max-width: 100%;">
+        <div class="offcanvas-header bg-brown-dark text-brown-mid">
+            <h5 class="offcanvas-title fw-bold" id="cartOffcanvasLabel"><i class="fas fa-shopping-basket me-2"></i> سلة
+                المشتريات</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+                aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body bg-white p-4">
+
+            <div id="cart-items-container">
+                <div class="cart-empty-state">
+                    <i class="fas fa-shopping-basket"></i>
+                    <p>سلتك فارغة حتى الآن</p>
+                    <small>أضف منتجاتك المفضلة واستمتع بأفضل الأسعار</small>
+                </div>
+            </div>
+
+            <div class="discount-row d-flex gap-2 mt-4 mb-2">
+                <input type="text" id="discount-code" class="discount-input" placeholder="كود الخصم (مثال: Mo5%)">
+                <button class="discount-apply-btn" onclick="applyDiscount()">تطبيق</button>
+            </div>
+            <div id="discount-message" class="mb-3"></div>
+
+            <div class="cart-summary mb-3" id="cart-summary" style="display:none">
+                <div class="summary-row"><span>إجمالي المنتجات</span><span id="sum-subtotal">٠ ج.م</span></div>
+                <div class="summary-row" id="sum-disc-row" style="display:none;color:var(--red)"><span>خصم
+                        الكوبون</span><span id="sum-disc">٠ ج.م</span></div>
+                <div class="summary-row"><span>مصاريف الشحن</span><span id="sum-ship">يُحدد بالمحافظة</span></div>
+                <div class="summary-row total"><span>الإجمالي النهائي</span><span id="sum-total">٠ ج.م</span></div>
+            </div>
+
+            <div class="payment-section border mb-3">
+                <div class="payment-title fw-bold mb-3">💳 طريقة الدفع</div>
+                <label class="payment-option">
+                    <input type="radio" name="pay" value="الدفع نقداً عند الاستلام" checked>
+                    <i class="fas fa-money-bill-wave"></i><span>نقداً لمندوب الشحن عند الاستلام</span>
+                </label>
+                <label class="payment-option">
+                    <input type="radio" name="pay" value="محفظة إلكترونية (فودافون كاش / انستا باي)">
+                    <i class="fas fa-mobile-alt"></i><span>فودافون كاش / إنستا باي (مقدم)</span>
+                </label>
+            </div>
+
+            <div class="checkout-form">
+                <div class="form-field mb-2">
+                    <label class="form-label">الاسم بالكامل *</label>
+                    <input type="text" id="customer-name" class="form-input" placeholder="مثال: محمد أحمد علي">
+                </div>
+                <div class="form-field mb-2">
+                    <label class="form-label">المحافظة *</label>
+                    <select id="governorate" class="form-select" onchange="updateSummary()">
+                        <option value="" disabled selected>اختر...</option>
+                        <optgroup label="وجه بحري والقناة (١٠٠ ج.م)">
+                            <option value="100">القاهرة</option>
+                            <option value="100">الجيزة</option>
+                            <option value="100">الإسكندرية</option>
+                            <option value="100">القليوبية</option>
+                            <option value="100">الدقهلية</option>
+                            <option value="100">الشرقية</option>
+                            <option value="100">الغربية</option>
+                            <option value="100">المنوفية</option>
+                            <option value="100">البحيرة</option>
+                            <option value="100">كفر الشيخ</option>
+                            <option value="100">دمياط</option>
+                            <option value="100">بورسعيد</option>
+                            <option value="100">الإسماعيلية</option>
+                            <option value="100">السويس</option>
+                            <option value="100">مطروح</option>
+                        </optgroup>
+                        <optgroup label="وجه قبلي (١١٠ ج.م)">
+                            <option value="110">الفيوم</option>
+                            <option value="110">بني سويف</option>
+                            <option value="110">المنيا</option>
+                            <option value="110">أسيوط</option>
+                            <option value="110">سوهاج</option>
+                            <option value="110">قنا</option>
+                            <option value="110">الأقصر</option>
+                            <option value="110">أسوان</option>
+                            <option value="110">البحر الأحمر</option>
+                            <option value="110">الوادي الجديد</option>
+                        </optgroup>
+                        <optgroup label="سيناء (١٢٠ ج.م)">
+                            <option value="120">شمال سيناء</option>
+                            <option value="120">جنوب سيناء</option>
+                        </optgroup>
+                    </select>
+                </div>
+                <div class="form-field mb-2">
+                    <label class="form-label">العنوان التفصيلي *</label>
+                    <input type="text" id="customer-address" class="form-input"
+                        placeholder="المنطقة، الشارع، رقم العمارة، الطابق">
+                </div>
+                <div class="form-field mb-3">
+                    <label class="form-label">رقم الهاتف *</label>
+                    <input type="tel" id="customer-phone" class="form-input" placeholder="01XXXXXXXXX" maxlength="11">
+                </div>
+                <button class="checkout-btn" onclick="sendOrder()">
+                    <i class="fab fa-whatsapp" style="font-size:20px"></i>
+                    إتمام الطلب عبر واتساب
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div id="toast"><i class="fas fa-check-circle"></i><span id="toast-msg"></span></div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- AOS Animation JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <!-- Custom Script -->
+    <script src="script.js"></script>
+</body>
+
+</html>

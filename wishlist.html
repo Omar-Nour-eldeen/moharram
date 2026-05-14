@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المفضلة | متجر محرم</title>
+    <link rel="icon" href="images/business card back 2.png" type="image/png">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Bootstrap 5 RTL CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+
+    <!-- AOS Animation CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- PROMO TICKER -->
+    <div class="promo-ticker">
+        <div class="ticker-inner">
+            <span>🚚 شحن مجاني للطلبات فوق 1999 ج.م</span>
+            <span>✨ كود خصم <span class="code-badge">Mo5%</span> يوفر 5% على طلبك</span>
+            <span>🍯 منتجات طبيعية 100% مضمونة الجودة</span>
+            <span>📦 توصيل لجميع محافظات مصر</span>
+            <span>🌿 خبرة أكثر من 3 سنوات في المنتجات الطبيعية</span>
+            <span>🚚 شحن مجاني للطلبات فوق 1999 ج.م</span>
+            <span>✨ كود خصم <span class="code-badge">Mo5%</span> يوفر 5% على طلبك</span>
+            <span>🍯 منتجات طبيعية 100% مضمونة الجودة</span>
+            <span>📦 توصيل لجميع محافظات مصر</span>
+            <span>🌿 خبرة أكثر من 3 سنوات في المنتجات الطبيعية</span>
+        </div>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg py-2 px-4 sticky-top border-bottom"
+        style="background: rgba(255,255,255,0.97); backdrop-filter: blur(14px); box-shadow: 0 2px 18px var(--shadow); z-index: 1030; top: 37px;">
+        <div class="container-fluid">
+            <a class="navbar-brand brand-logo m-0" href="index.html">
+                <img class="rounded-circle" src="images/logo.png" alt="شعار محرم" style="width: 8vh; height: 8vh;">
+                <div class="brand-name d-none d-sm-block">
+                    متجر محرم
+                    <span>منتجات طبيعية أصيلة</span>
+                </div>
+            </a>
+
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse"
+                data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-center" id="mainNav">
+                <ul class="navbar-nav fw-bold gap-lg-3 mt-3 mt-lg-0 text-center">
+                    <li class="nav-item"><a class="nav-link text-brown-dark" href="index.html">الرئيسية</a></li>
+                    <li class="nav-item"><a class="nav-link text-brown-dark" href="index.html#products">المنتجات</a></li>
+                    <li class="nav-item"><a class="nav-link active text-brown-dark" href="wishlist.html">المفضلة</a></li>
+                    <li class="nav-item"><a class="nav-link text-brown-dark" href="index.html#social">تواصل معنا</a></li>
+                </ul>
+            </div>
+
+            <div class="header-actions d-flex gap-2 align-items-center mt-3 mt-lg-0 justify-content-center">
+                <a href="wishlist.html" class="header-icon-btn text-decoration-none" title="المفضلة" style="position:relative;">
+                    <i class="fas fa-heart" style="color: var(--red);"></i>
+                    <span id="wishlist-counter"
+                        style="position:absolute;top:-4px;left:-4px;background:var(--red);color:white;border-radius:50%;width:18px;height:18px;font-size:10px;font-weight:900;display:none;align-items:center;justify-content:center;">0</span>
+                </a>
+                <button class="header-icon-btn" onclick="openCart()" title="السلة" style="position:relative;">
+                    <i class="fas fa-shopping-basket"></i>
+                    <span id="cart-counter" style="display:none;align-items:center;justify-content:center;">0</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- WISHLIST HERO (SAME STYLE AS MAIN HERO) -->
+    <section class="hero position-relative d-flex align-items-center py-5" style="min-height: 75vh;">
+
+        <!-- Background (اختار صورة مناسبة للمفضلة أو منتجات) -->
+        <img src="images/hero-bg.png" class="position-absolute top-0 start-0 w-100 hero-img" alt="wishlist">
+
+        <!-- Black Overlay -->
+        <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark" style="opacity: 0.62;"></div>
+
+        <!-- Content -->
+        <div class="container text-center hero-content position-relative text-white" data-aos="zoom-in">
+            <div class="hero-badge mb-2">
+                ❤️ قائمة المفضلة الخاصة بك
+            </div>
+            <h1>
+                منتجاتك <em>المفضلة</em><br>
+                في مكان واحد
+            </h1>
+            <p class="lead text-white-50">
+                كل ما أضفته للمفضلة جاهز للرجوع إليه وطلبه في أي وقت بسهولة
+            </p>
+            <div class="hero-btns d-flex justify-content-center gap-3 mt-4">
+                <a href="index.html#products" class="btn-primary text-decoration-none">
+                    <i class="fas fa-store"></i> تصفح المنتجات
+                </a>
+                <a href="index.html#social" class="btn-outline text-decoration-none">
+                    <i class="fas fa-headset"></i> تواصل معنا
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- TRUST BAR -->
+    <div class="trust-bar py-3">
+        <div class="container">
+            <div class="d-flex justify-content-center flex-wrap gap-4">
+                <div class="trust-item"><i class="fas fa-shield-alt"></i><span>ضمان الجودة</span></div>
+                <div class="trust-item"><i class="fas fa-truck"></i><span>توصيل لكل مصر</span></div>
+                <div class="trust-item"><i class="fas fa-leaf"></i><span>طبيعي ١٠٠٪</span></div>
+                <div class="trust-item"><i class="fas fa-headset"></i><span>دعم ٧ أيام</span></div>
+                <div class="trust-item"><i class="fas fa-undo"></i><span>استرجاع مضمون</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- WISHLIST CONTENT -->
+    <section class="container py-5">
+        <div class="section-header d-flex align-items-center gap-3 mb-4" data-aos="fade-up">
+            <h2 class="section-title">❤️ قائمة المفضلة</h2>
+            <div class="section-line"></div>
+            <span id="wishlist-count-label" class="text-muted text-nowrap" style="font-size:12px;"></span>
+        </div>
+
+        <!-- Empty State -->
+        <div id="wishlist-empty" class="text-center py-5" style="display:none;" data-aos="fade-up">
+            <div style="font-size: 80px; margin-bottom: 20px; opacity: 0.3;">🤍</div>
+            <h3 class="fw-bold mb-3" style="color: var(--brown-dark);">المفضلة فارغة</h3>
+            <p class="text-muted mb-4" style="font-size: 14px;">لم تقم بإضافة أي منتجات إلى المفضلة بعد.<br>تصفح منتجاتنا وأضف ما يعجبك!</p>
+            <a href="index.html#products" class="btn-primary text-decoration-none" style="display:inline-flex; align-items:center; gap:8px;">
+                <i class="fas fa-store"></i> تصفح المنتجات
+            </a>
+        </div>
+
+        <!-- Products Grid -->
+        <div id="wishlist-grid" class="row g-4"></div>
+
+        <!-- Add all to cart button (shown when wishlist has items) -->
+        <div id="wishlist-actions" class="text-center mt-5" style="display:none;" data-aos="fade-up">
+            <button class="add-to-cart-btn px-5 py-3" style="font-size:15px; border-radius:50px; display:inline-flex; gap:10px;" onclick="addAllToCart()">
+                <i class="fas fa-cart-plus"></i> إضافة الكل للسلة
+            </button>
+        </div>
+    </section>
+
+    <!-- SOCIAL SECTION -->
+    <section class="social-section py-5" id="social" data-aos="fade-up">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2>تابعنا وتواصل معنا</h2>
+                <p>نحن هنا لمساعدتك وللإجابة على كل استفساراتك في أي وقت</p>
+            </div>
+            <div class="d-flex gap-3 justify-content-center flex-wrap">
+                <a href="https://wa.me/201067986822" target="_blank" rel="noopener" class="social-float-btn sfb-wa">
+                    <i class="fab fa-whatsapp"></i>
+                </a>
+                <a href="https://www.instagram.com/moharram_0?igsh=MW5lcDI4M2QwaGN0dQ==" target="_blank" rel="noopener" class="social-float-btn sfb-ig">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://www.facebook.com/share/1JJwNnuZjP/" target="_blank" rel="noopener" class="social-float-btn sfb-fb">
+                    <i class="fab fa-facebook"></i>
+                </a>
+                <a href="https://youtube.com/@ebrahimmoharram9500?si=176t-Mvjx9IpLmsy" target="_blank" rel="noopener" class="social-float-btn sfb-yt">
+                    <i class="fab fa-youtube"></i>
+                </a>
+                <a href="https://www.tiktok.com/@moharram022?_r=1&_t=ZS-96IgbrUUruX" target="_blank" rel="noopener" class="social-float-btn sfb-tk">
+                    <i class="fab fa-tiktok"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="pt-5 pb-3">
+        <div class="container">
+            <div class="row g-4 mb-4">
+                <div class="col-12 col-md-6 col-lg-3 footer-col">
+                    <h4>متجر محرم</h4>
+                    <p>منتجات طبيعية أصيلة بجودة مضمونة، نصل إليك في كل محافظات مصر.</p>
+                    <p class="mt-2 text-brown-mid">📍 القاهرة، مصر</p>
+                </div>
+                <div class="col-12 col-md-6 col-lg-3 footer-col">
+                    <h4>روابط سريعة</h4>
+                    <a href="index.html#products">المنتجات</a>
+                    <a href="index.html#social">تواصل معنا</a>
+                    <a href="https://wa.me/201067986822" target="_blank">اطلب الآن عبر واتساب</a>
+                </div>
+                <div class="col-12 col-md-6 col-lg-3 footer-col">
+                    <h4>خدمة العملاء</h4>
+                    <a href="https://wa.me/201067986822" target="_blank">واتساب: 01067986822</a>
+                    <a href="tel:+201067986822">اتصل: 01067986822</a>
+                    <p class="mt-2">متاحون ٧ أيام أسبوعياً</p>
+                </div>
+                <div class="col-12 col-md-6 col-lg-3 footer-col">
+                    <h4>تابعنا</h4>
+                    <a href="https://www.instagram.com/moharram_0?igsh=MW5lcDI4M2QwaGN0dQ==" target="_blank">إنستاجرام</a>
+                    <a href="https://www.facebook.com/share/1JJwNnuZjP/" target="_blank">فيسبوك</a>
+                    <a href="https://youtube.com/@ebrahimmoharram9500?si=176t-Mvjx9IpLmsy" target="_blank">يوتيوب</a>
+                    <a href="https://www.tiktok.com/@moharram022?_r=1&_t=ZS-96IgbrUUruX" target="_blank">تيك توك</a>
+                </div>
+            </div>
+            <div class="footer-bottom mt-4">
+                <p class="mb-0">
+                    <i class="fa-regular fa-copyright"></i>
+                    2026 متجر محرم للمنتجات الطبيعية · جميع الحقوق محفوظة
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- FLOATING CART -->
+    <button class="float-cart-btn" onclick="openCart()">
+        <i class="fas fa-shopping-basket"></i>
+        <span id="float-cart-counter" style="display:none;align-items:center;justify-content:center;">0</span>
+    </button>
+
+    <!-- SOCIAL FLOAT -->
+    <div class="social-float">
+        <div class="social-links" id="social-links">
+            <a href="https://www.tiktok.com/@moharram022?_r=1&_t=ZS-96IgbrUUruX" target="_blank" rel="noopener" class="social-float-btn sfb-tk">
+                <i class="fab fa-tiktok"></i><span class="tooltip">تيك توك</span>
+            </a>
+            <a href="https://youtube.com/@ebrahimmoharram9500?si=176t-Mvjx9IpLmsy" target="_blank" rel="noopener" class="social-float-btn sfb-yt">
+                <i class="fab fa-youtube"></i><span class="tooltip">يوتيوب</span>
+            </a>
+            <a href="https://www.facebook.com/share/1JJwNnuZjP/" target="_blank" rel="noopener" class="social-float-btn sfb-fb">
+                <i class="fab fa-facebook"></i><span class="tooltip">فيسبوك</span>
+            </a>
+            <a href="https://www.instagram.com/moharram_0?igsh=MW5lcDI4M2QwaGN0dQ==" target="_blank" rel="noopener" class="social-float-btn sfb-ig">
+                <i class="fab fa-instagram"></i><span class="tooltip">إنستاجرام</span>
+            </a>
+            <a href="https://wa.me/201067986822" target="_blank" rel="noopener" class="social-float-btn sfb-wa">
+                <i class="fab fa-whatsapp"></i><span class="tooltip">واتساب</span>
+            </a>
+        </div>
+        <button class="social-toggle-btn" id="social-toggle-btn" onclick="toggleSocial()" title="تواصل معنا">
+            <i class="fas fa-share-alt toggle-icon"></i>
+        </button>
+    </div>
+
+    <!-- BOOTSTRAP OFFCANVAS CART -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="cartOffcanvas" aria-labelledby="cartOffcanvasLabel"
+        style="width: 470px; max-width: 100%;">
+        <div class="offcanvas-header bg-brown-dark text-brown-mid">
+            <h5 class="offcanvas-title fw-bold" id="cartOffcanvasLabel"><i class="fas fa-shopping-basket me-2"></i> سلة المشتريات</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body bg-white p-4">
+            <div id="cart-items-container">
+                <div class="cart-empty-state">
+                    <i class="fas fa-shopping-basket"></i>
+                    <p>سلتك فارغة حتى الآن</p>
+                    <small>أضف منتجاتك المفضلة واستمتع بأفضل الأسعار</small>
+                </div>
+            </div>
+            <div class="discount-row d-flex gap-2 mt-4 mb-2">
+                <input type="text" id="discount-code" class="discount-input" placeholder="كود الخصم (مثال: Mo5%)">
+                <button class="discount-apply-btn" onclick="applyDiscount()">تطبيق</button>
+            </div>
+            <div id="discount-message" class="mb-3"></div>
+            <div class="cart-summary mb-3" id="cart-summary" style="display:none">
+                <div class="summary-row"><span>إجمالي المنتجات</span><span id="sum-subtotal">٠ ج.م</span></div>
+                <div class="summary-row" id="sum-disc-row" style="display:none;color:var(--red)"><span>خصم الكوبون</span><span id="sum-disc">٠ ج.م</span></div>
+                <div class="summary-row"><span>مصاريف الشحن</span><span id="sum-ship">يُحدد بالمحافظة</span></div>
+                <div class="summary-row total"><span>الإجمالي النهائي</span><span id="sum-total">٠ ج.م</span></div>
+            </div>
+            <div class="payment-section border mb-3">
+                <div class="payment-title fw-bold mb-3">💳 طريقة الدفع</div>
+                <label class="payment-option">
+                    <input type="radio" name="pay" value="الدفع نقداً عند الاستلام" checked>
+                    <i class="fas fa-money-bill-wave"></i><span>نقداً لمندوب الشحن عند الاستلام</span>
+                </label>
+                <label class="payment-option">
+                    <input type="radio" name="pay" value="محفظة إلكترونية (فودافون كاش / انستا باي)">
+                    <i class="fas fa-mobile-alt"></i><span>فودافون كاش / إنستا باي (مقدم)</span>
+                </label>
+            </div>
+            <div class="checkout-form">
+                <div class="form-field mb-2">
+                    <label class="form-label">الاسم بالكامل *</label>
+                    <input type="text" id="customer-name" class="form-input" placeholder="مثال: محمد أحمد علي">
+                </div>
+                <div class="form-field mb-2">
+                    <label class="form-label">المحافظة *</label>
+                    <select id="governorate" class="form-select" onchange="updateSummary()">
+                        <option value="" disabled selected>اختر...</option>
+                        <optgroup label="وجه بحري والقناة (١٠٠ ج.م)">
+                            <option value="100">القاهرة</option>
+                            <option value="100">الجيزة</option>
+                            <option value="100">الإسكندرية</option>
+                            <option value="100">القليوبية</option>
+                            <option value="100">الدقهلية</option>
+                            <option value="100">الشرقية</option>
+                            <option value="100">الغربية</option>
+                            <option value="100">المنوفية</option>
+                            <option value="100">البحيرة</option>
+                            <option value="100">كفر الشيخ</option>
+                            <option value="100">دمياط</option>
+                            <option value="100">بورسعيد</option>
+                            <option value="100">الإسماعيلية</option>
+                            <option value="100">السويس</option>
+                            <option value="100">مطروح</option>
+                        </optgroup>
+                        <optgroup label="وجه قبلي (١١٠ ج.م)">
+                            <option value="110">الفيوم</option>
+                            <option value="110">بني سويف</option>
+                            <option value="110">المنيا</option>
+                            <option value="110">أسيوط</option>
+                            <option value="110">سوهاج</option>
+                            <option value="110">قنا</option>
+                            <option value="110">الأقصر</option>
+                            <option value="110">أسوان</option>
+                            <option value="110">البحر الأحمر</option>
+                            <option value="110">الوادي الجديد</option>
+                        </optgroup>
+                        <optgroup label="سيناء (١٢٠ ج.م)">
+                            <option value="120">شمال سيناء</option>
+                            <option value="120">جنوب سيناء</option>
+                        </optgroup>
+                    </select>
+                </div>
+                <div class="form-field mb-2">
+                    <label class="form-label">العنوان التفصيلي *</label>
+                    <input type="text" id="customer-address" class="form-input" placeholder="المنطقة، الشارع، رقم العمارة، الطابق">
+                </div>
+                <div class="form-field mb-3">
+                    <label class="form-label">رقم الهاتف *</label>
+                    <input type="tel" id="customer-phone" class="form-input" placeholder="01XXXXXXXXX"
+                        pattern="^01[0125][0-9]{8}$" title="يرجى إدخال رقم هاتف مصري صحيح (مثال: 01012345678)" required>
+                </div>
+                <button class="checkout-btn" onclick="sendOrder()">
+                    <i class="fab fa-whatsapp" style="font-size:20px"></i>
+                    إتمام الطلب عبر واتساب
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div id="toast"><i class="fas fa-check-circle"></i><span id="toast-msg"></span></div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- AOS Animation JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- Custom Script -->
+    <script src="script.js"></script>
+
+    <script>
+    // =============================================
+    //  WISHLIST PAGE — reads directly from localStorage
+    //  Runs AFTER script.js so shared functions are available
+    // =============================================
+
+    function renderWishlistPageFull() {
+        // Always re-read fresh from localStorage
+        let wl = [];
+        try {
+            wl = JSON.parse(localStorage.getItem('moharram_wishlist')) || [];
+            if (!Array.isArray(wl)) wl = [];
+            wl = wl.filter(i => i && (i.title || i.name));
+        } catch(e) { wl = []; }
+
+        const grid    = document.getElementById('wishlist-grid');
+        const empty   = document.getElementById('wishlist-empty');
+        const actions = document.getElementById('wishlist-actions');
+        const label   = document.getElementById('wishlist-count-label');
+
+        if (!wl.length) {
+            grid.innerHTML    = '';
+            empty.style.display   = 'block';
+            actions.style.display = 'none';
+            label.textContent     = '';
+            return;
+        }
+
+        empty.style.display   = 'none';
+        actions.style.display = 'block';
+        label.textContent     = wl.length + ' منتج';
+
+        grid.innerHTML = wl.map((it, i) => `
+            <div class="col-12 col-sm-6 col-lg-3 product-card-container" data-aos="fade-up" data-aos-delay="${100 + (i % 4) * 100}">
+                <div class="card h-100 product-card border-0">
+                    <button
+                        class="wishlist-btn active position-absolute"
+                        style="top:10px; right:10px; z-index:10;"
+                        title="حذف من المفضلة"
+                        onclick="removeFromWishlistPage('${encodeURIComponent(it.title || it.name)}', this)">
+                        <i class="fas fa-heart" style="color: var(--red);"></i>
+                    </button>
+                    <div class="product-image">
+                        <img src="${it.img || ''}" alt="${it.title || it.name}"
+                            onerror="this.parentElement.innerHTML='<span class=ph-icon>🍯</span>'">
+                    </div>
+                    <div class="card-body product-body d-flex flex-column">
+                        <div class="product-category">${it.cat || 'منتج'}</div>
+                        <h3 class="product-title">${it.title || it.name}</h3>
+                        <div class="product-stars">★★★★★</div>
+                        <p class="product-desc flex-grow-1"></p>
+                        <div class="product-price-row mb-2">
+                            <span class="product-price">${Number(it.price || 0).toLocaleString()} ج.م</span>
+                        </div>
+                        <div class="d-flex gap-2 mt-auto">
+                            <button class="add-to-cart-btn"
+                                onclick="addToCart('${(it.cartName || it.name).replace(/'/g,"\\'")}', ${it.price || 0})">
+                                <i class="fas fa-cart-plus"></i> أضف للسلة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+
+        // Refresh AOS for newly rendered cards
+        if (typeof AOS !== 'undefined') AOS.refresh();
+    }
+
+    // Remove a single item from wishlist (from within this page)
+    function removeFromWishlistPage(encodedTitle, btn) {
+        const title = decodeURIComponent(encodedTitle);
+        let wl = [];
+        try {
+            wl = JSON.parse(localStorage.getItem('moharram_wishlist')) || [];
+        } catch(e) {}
+        wl = wl.filter(i => i && (i.title !== title && i.name !== title));
+        localStorage.setItem('moharram_wishlist', JSON.stringify(wl));
+
+        // Animate card out
+        const card = btn.closest('.col-12');
+        if (card) {
+            card.style.transition = 'opacity 0.3s, transform 0.3s';
+            card.style.opacity = '0';
+            card.style.transform = 'scale(0.9)';
+            setTimeout(() => {
+                card.remove();
+                renderWishlistPageFull(); // re-render (handles empty state)
+            }, 300);
+        }
+
+        // Sync counter
+        updateWishlistCount();
+        showToast('🗑️ تم الحذف من المفضلة', 'error');
+    }
+
+    // Add all wishlist items to cart at once
+    function addAllToCart() {
+        let wl = [];
+        try {
+            wl = JSON.parse(localStorage.getItem('moharram_wishlist')) || [];
+        } catch(e) {}
+        if (!wl.length) return;
+        wl.forEach(it => {
+            if (it && it.price) addToCart(it.cartName || it.name, it.price);
+        });
+        showToast('✅ تمت إضافة كل المفضلة للسلة!', 'success');
+    }
+
+    // Run on page load — after script.js initializes
+    document.addEventListener('DOMContentLoaded', function () {
+        renderWishlistPageFull();
+    });
+    </script>
+
+</body>
+</html>

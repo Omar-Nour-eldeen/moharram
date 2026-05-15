@@ -529,6 +529,7 @@ const H = isMobile ? 30 : 36;
 
 function resize() {
     canvas.width = canvas.offsetWidth;
+    canvas.height = H;
 }
 resize();
 window.addEventListener('resize', () => {

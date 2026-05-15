@@ -67,10 +67,17 @@ body {
 
 /* PROMO TICKER */
 
-#tickerCanvas {
+#sticky-header {
     position: sticky;
     top: 0;
     z-index: 1040;
+}
+
+#tickerCanvas {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0;
 }
 
 
@@ -80,11 +87,16 @@ header {
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
     box-shadow: 0 2px 18px var(--shadow);
-    position: sticky;
-    top: 37px;
-    z-index: 1030;
     border-bottom: 1px solid rgba(186, 163, 130, 0.25);
 }
+
+/* Navbar inside sticky wrapper */
+nav.navbar {
+    background: rgba(255, 255, 255, 0.97);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 2px 18px var(--shadow);
+}
+
 
 .brand-logo {
     display: flex;

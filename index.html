@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 
 <head>
@@ -27,12 +27,15 @@
 
 <body>
 
+    <!-- STICKY HEADER WRAPPER -->
+    <div id="sticky-header">
+
     <!-- PROMO TICKER -->
-    <canvas id="tickerCanvas" height="40" style="width:100%;display:block;"></canvas>
+    <canvas id="tickerCanvas" style="width:100%;display:block;"></canvas>
 
     <!-- NAVBAR -->
-    <nav class="navbar navbar-expand-lg py-2 px-2 px-lg-4 sticky-top border-bottom"
-        style="background: rgba(255,255,255,0.97); backdrop-filter: blur(14px); box-shadow: 0 2px 18px var(--shadow); z-index: 1030; top: 37px;">
+    <nav class="navbar navbar-expand-lg py-2 px-2 px-lg-4 border-bottom"
+        style="background: rgba(255,255,255,0.97); backdrop-filter: blur(14px); box-shadow: 0 2px 18px var(--shadow);">
         <div class="container-fluid">
             <a class="navbar-brand brand-logo m-0" href="index.html">
                 <img class="rounded-circle" src="images/logo.png" alt="شعار محرم" style="width: 8vh; height: 8vh;">
@@ -72,10 +75,13 @@
         </div>
     </nav>
 
+    </div><!-- /#sticky-header -->
+
     <!-- HERO -->
     <section class="hero position-relative d-flex align-items-center py-5" style="min-height: 75vh;">
         <!-- Background Image -->
-        <img src="images/عسل زهور البركة.png" class="w-100 h-100 position-absolute top-0 start-0 object-fit-cover" alt="hero">
+        <img src="images/عسل زهور البركة.png" class="w-100 h-100 position-absolute top-0 start-0 object-fit-cover"
+            alt="hero">
 
         <!-- Black Overlay -->
         <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark" style="opacity: 0.5;"></div>
@@ -613,7 +619,8 @@
                             <div class="mb-3">
                                 <label class="form-label fw-bold small text-muted">رقم الهاتف</label>
                                 <input type="tel" id="contact-phone"
-                                    class="form-control form-control-lg bg-light border-0" placeholder="01XXXXXXXXX" maxlength="11">
+                                    class="form-control form-control-lg bg-light border-0" placeholder="01XXXXXXXXX"
+                                    maxlength="11">
                             </div>
                             <div class="mb-4">
                                 <label class="form-label fw-bold small text-muted">الرسالة</label>

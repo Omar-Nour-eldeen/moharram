@@ -28,24 +28,10 @@
 <body>
 
     <!-- PROMO TICKER -->
-    <div class="promo-ticker">
-        <div class="ticker-inner">
-            <span>🚚 شحن مجاني للطلبات فوق 1999 ج.م</span>
-            <span>✨ كود خصم <span class="code-badge">Mo5%</span> يوفر 5% على طلبك</span>
-            <span>🍯 منتجات طبيعية 100% مضمونة الجودة</span>
-            <span>📦 توصيل لجميع محافظات مصر</span>
-            <span>🌿 خبرة أكثر من 3 سنوات في المنتجات الطبيعية</span>
-            <!-- repeat for seamless loop -->
-            <span>🚚 شحن مجاني للطلبات فوق 1999 ج.م</span>
-            <span>✨ كود خصم <span class="code-badge">Mo5%</span> يوفر 5% على طلبك</span>
-            <span>🍯 منتجات طبيعية 100% مضمونة الجودة</span>
-            <span>📦 توصيل لجميع محافظات مصر</span>
-            <span>🌿 خبرة أكثر من 3 سنوات في المنتجات الطبيعية</span>
-        </div>
-    </div>
+    <canvas id="tickerCanvas" height="36" style="width:100%;display:block;"></canvas>
 
     <!-- NAVBAR -->
-    <nav class="navbar navbar-expand-lg py-2 px-4 sticky-top border-bottom"
+    <nav class="navbar navbar-expand-lg py-2 px-2 px-lg-4 sticky-top border-bottom"
         style="background: rgba(255,255,255,0.97); backdrop-filter: blur(14px); box-shadow: 0 2px 18px var(--shadow); z-index: 1030; top: 37px;">
         <div class="container-fluid">
             <a class="navbar-brand brand-logo m-0" href="index.html">
@@ -89,7 +75,7 @@
     <!-- HERO -->
     <section class="hero position-relative d-flex align-items-center py-5" style="min-height: 75vh;">
         <!-- Background Image -->
-        <img src="images/عسل زهور البركة.png" class="w-100 h-100 position-absolute top-0 start-0" alt="hero">
+        <img src="images/عسل زهور البركة.png" class="w-100 h-100 position-absolute top-0 start-0 object-fit-cover" alt="hero">
 
         <!-- Black Overlay -->
         <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark" style="opacity: 0.5;"></div>
@@ -771,7 +757,7 @@
             </div>
 
             <div class="discount-row d-flex gap-2 mt-4 mb-2">
-                <input type="text" id="discount-code" class="discount-input" placeholder="كود الخصم (مثال: Mo5%)">
+                <input type="text" id="discount-code" class="discount-input" placeholder="كود الخصم">
                 <button class="discount-apply-btn" onclick="applyDiscount()">تطبيق</button>
             </div>
             <div id="discount-message" class="mb-3"></div>

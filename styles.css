@@ -65,51 +65,14 @@ body {
     border-radius: 10px;
 }
 
-/* ===== PROMO TICKER ===== */
-.promo-ticker {
-    background: var(--brown-dark);
-    color: var(--brown-mid);
-    padding: 9px 0;
-    overflow: hidden;
-    font-size: 13px;
-    font-weight: 700;
+/* PROMO TICKER */
+
+#tickerCanvas {
     position: sticky;
     top: 0;
     z-index: 1040;
-    /* Bootstrap fixed top is 1030 */
 }
 
-.ticker-inner {
-    display: flex;
-    gap: 70px;
-    animation: tickerScroll 12s linear infinite;
-    white-space: nowrap;
-}
-
-@keyframes tickerScroll {
-    0% {
-        transform: translateX(0);
-    }
-
-    100% {
-        transform: translateX(-50%);
-    }
-}
-
-.ticker-inner span {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.code-badge {
-    background: var(--brown-mid);
-    color: var(--brown-dark);
-    padding: 1px 10px;
-    border-radius: 20px;
-    font-weight: 900;
-    font-size: 12px;
-}
 
 /* ===== HEADER ===== */
 header {
@@ -206,7 +169,7 @@ header {
 .hero-content {
     position: relative;
     z-index: 1;
-    max-width: 680px;
+    max-width: 100vh;
     margin: 0 auto;
 }
 
@@ -1065,13 +1028,28 @@ footer {
 
 .hero-img {
     height: 100vh;
-    object-fit: cover; /* يخلي الصورة تملي الشاشة بدون ما تتشوه */
+    object-fit: cover;
 }
 
 /* للموبايل */
 @media (max-width: 900px) {
     .hero-img {
-        height: 60vh; /* أقل من الديسكتوب عشان ما تاخدش الشاشة كلها */
+        height: 100%;
         object-position: left;
+        object-fit: cover;
     }
+}
+
+html,
+body {
+    width: 100%;
+    overflow-x: clip;
+}
+
+img {
+    max-width: 100%;
+}
+
+.hero {
+    overflow: hidden;
 }

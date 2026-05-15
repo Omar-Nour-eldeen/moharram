@@ -505,3 +505,74 @@ document.addEventListener("DOMContentLoaded", function () {
 
     renderWishlistPage();
 });
+
+
+const canvas = document.getElementById('tickerCanvas');
+const ctx = canvas.getContext('2d');
+
+const items = [
+    '🚚 شحن مجاني للطلبات فوق 1999 ج.م',
+    '✨ كود خصم [Mo5%] يوفر 5% على طلبك',
+    '🍯 منتجات طبيعية 100% مضمونة الجودة',
+    '📦 توصيل لجميع محافظات مصر',
+    '🌿 خبرة أكثر من 3 سنوات في المنتجات الطبيعية'
+];
+
+const GAP = 80;
+const SPEED = 2.5;
+const BG = '#403124';
+const FG = '#BAA382';
+
+const isMobile = window.innerWidth <= 768;
+const FONT = `bold ${isMobile ? '11' : '13'}px sans-serif`;
+const H = isMobile ? 30 : 36;
+
+function resize() {
+    canvas.width = canvas.offsetWidth;
+}
+resize();
+window.addEventListener('resize', () => {
+    resize();
+    recalc();
+});
+
+ctx.font = FONT;
+let itemWidths = [];
+let segW = 0;
+
+function recalc() {
+    ctx.font = FONT;
+    itemWidths = items.map(t => ctx.measureText(t).width);
+    segW = itemWidths.reduce((a, b) => a + b, 0) + GAP * items.length;
+}
+recalc();
+
+let x = canvas.width;
+
+function draw() {
+    const W = canvas.width;
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = BG;
+    ctx.fillRect(0, 0, W, H);
+
+    ctx.font = FONT;
+    ctx.fillStyle = FG;
+    ctx.textBaseline = 'middle';
+
+    let offset = x % segW;
+    if (offset > 0) offset -= segW;
+
+    while (offset < W) {
+        let cx = offset;
+        for (let i = 0; i < items.length; i++) {
+            ctx.fillText(items[i], cx, H / 2);
+            cx += itemWidths[i] + GAP;
+        }
+        offset += segW;
+    }
+
+    x -= SPEED;
+    requestAnimationFrame(draw);
+}
+
+draw();

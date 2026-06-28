@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -107,8 +107,8 @@
             <div class="d-flex justify-content-center flex-wrap gap-4">
                 <div class="trust-item"><i class="fas fa-shield-alt"></i><span>ضمان الجودة</span></div>
                 <div class="trust-item"><i class="fas fa-truck"></i><span>توصيل لكل مصر</span></div>
-                <div class="trust-item"><i class="fas fa-leaf"></i><span>طبيعي ١٠٠٪</span></div>
-                <div class="trust-item"><i class="fas fa-headset"></i><span>دعم ٧ أيام</span></div>
+                <div class="trust-item"><i class="fas fa-leaf"></i><span>طبيعي 100٪</span></div>
+                <div class="trust-item"><i class="fas fa-headset"></i><span>دعم 7 أيام</span></div>
                 <div class="trust-item"><i class="fas fa-undo"></i><span>استرجاع مضمون</span></div>
             </div>
         </div>
@@ -189,7 +189,7 @@
                     <h4>خدمة العملاء</h4>
                     <a href="https://wa.me/201067986822" target="_blank">واتساب: 01067986822</a>
                     <a href="tel:+201067986822">اتصل: 01067986822</a>
-                    <p class="mt-2">متاحون ٧ أيام أسبوعياً</p>
+                    <p class="mt-2">متاحون 7 أيام أسبوعياً</p>
                 </div>
                 <div class="col-12 col-md-6 col-lg-3 footer-col">
                     <h4>تابعنا</h4>
@@ -259,10 +259,10 @@
             </div>
             <div id="discount-message" class="mb-3"></div>
             <div class="cart-summary mb-3" id="cart-summary" style="display:none">
-                <div class="summary-row"><span>إجمالي المنتجات</span><span id="sum-subtotal">٠ ج.م</span></div>
-                <div class="summary-row" id="sum-disc-row" style="display:none;color:var(--red)"><span>خصم الكوبون</span><span id="sum-disc">٠ ج.م</span></div>
+                <div class="summary-row"><span>إجمالي المنتجات</span><span id="sum-subtotal">0 ج.م</span></div>
+                <div class="summary-row" id="sum-disc-row" style="display:none;color:var(--red)"><span>خصم الكوبون</span><span id="sum-disc">0 ج.م</span></div>
                 <div class="summary-row"><span>مصاريف الشحن</span><span id="sum-ship">يُحدد بالمحافظة</span></div>
-                <div class="summary-row total"><span>الإجمالي النهائي</span><span id="sum-total">٠ ج.م</span></div>
+                <div class="summary-row total"><span>الإجمالي النهائي</span><span id="sum-total">0 ج.م</span></div>
             </div>
             <div class="payment-section border mb-3">
                 <div class="payment-title fw-bold mb-3">💳 طريقة الدفع</div>
@@ -284,7 +284,7 @@
                     <label class="form-label">المحافظة *</label>
                     <select id="governorate" class="form-select" onchange="updateSummary()">
                         <option value="" disabled selected>اختر...</option>
-                        <optgroup label="وجه بحري والقناة (١٠٠ ج.م)">
+                        <optgroup label="وجه بحري والقناة (100 ج.م)">
                             <option value="100">القاهرة</option>
                             <option value="100">الجيزة</option>
                             <option value="100">الإسكندرية</option>
@@ -301,7 +301,7 @@
                             <option value="100">السويس</option>
                             <option value="100">مطروح</option>
                         </optgroup>
-                        <optgroup label="وجه قبلي (١١٠ ج.م)">
+                        <optgroup label="وجه قبلي (110 ج.م)">
                             <option value="110">الفيوم</option>
                             <option value="110">بني سويف</option>
                             <option value="110">المنيا</option>
@@ -313,7 +313,7 @@
                             <option value="110">البحر الأحمر</option>
                             <option value="110">الوادي الجديد</option>
                         </optgroup>
-                        <optgroup label="سيناء (١٢٠ ج.م)">
+                        <optgroup label="سيناء (120 ج.م)">
                             <option value="120">شمال سيناء</option>
                             <option value="120">جنوب سيناء</option>
                         </optgroup>
@@ -394,7 +394,6 @@
                     <div class="card-body product-body d-flex flex-column">
                         <div class="product-category">${it.cat || 'منتج'}</div>
                         <h3 class="product-title">${it.title || it.name}</h3>
-                        <div class="product-stars">★★★★★</div>
                         <p class="product-desc flex-grow-1"></p>
                         <div class="product-price-row mb-2">
                             <span class="product-price">${Number(it.price || 0).toLocaleString()} ج.م</span>

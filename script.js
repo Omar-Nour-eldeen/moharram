@@ -1,4 +1,4 @@
-let cart = [];
+﻿let cart = [];
 let wishlist = [];
 try {
     cart = JSON.parse(localStorage.getItem('moharram_cart')) || [];
@@ -205,8 +205,8 @@ function applyDiscount() {
     if (!cart.length) { showToast('أضف منتجات أولاً!', 'warn'); return; }
     const code = document.getElementById('discount-code').value.trim();
     const msg = document.getElementById('discount-message');
-    if (code === 'Mo5%') { discount = 0.05; msg.style.color = '#25D366'; msg.textContent = '✅ تم تطبيق خصم ٥٪!'; showToast('✅ خصم ٥٪ مفعّل!', 'success'); }
-    else if (code === 'NATURE10') { discount = 0.10; msg.style.color = '#25D366'; msg.textContent = '✅ تم تطبيق خصم ١٠٪!'; showToast('✅ خصم ١٠٪ مفعّل!', 'success'); }
+    if (code === 'Mo5%') { discount = 0.05; msg.style.color = '#25D366'; msg.textContent = '✅ تم تطبيق خصم 5٪!'; showToast('✅ خصم 5٪ مفعّل!', 'success'); }
+    else if (code === 'NATURE10') { discount = 0.10; msg.style.color = '#25D366'; msg.textContent = '✅ تم تطبيق خصم 10٪!'; showToast('✅ خصم 10٪ مفعّل!', 'success'); }
     else { discount = 0; msg.style.color = 'var(--red)'; msg.textContent = '❌ كود غير صحيح أو منتهي'; showToast('❌ كود الخصم غير صحيح', 'error'); }
     updateSummary();
 }

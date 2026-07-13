@@ -1,4 +1,4 @@
-﻿let cart = [];
+let cart = [];
 let wishlist = [];
 try {
     cart = JSON.parse(localStorage.getItem('moharram_cart')) || [];
@@ -181,7 +181,7 @@ function updateSummary() {
     const afterDisc = rawTotal - discAmt;
     const gov = document.getElementById('governorate');
     let ship = gov && gov.value ? parseInt(gov.value) : 0;
-    if (afterDisc >= 1999 && cart.length) ship = 0;
+    if (rawTotal >= 1999 && cart.length) ship = 0;
 
     document.getElementById('sum-subtotal').textContent = rawTotal.toLocaleString() + ' ج.م';
 
@@ -194,7 +194,7 @@ function updateSummary() {
     const sh = document.getElementById('sum-ship');
     if (!cart.length) sh.textContent = 'يُحدد بالمحافظة';
     else if (!gov || !gov.value) sh.textContent = 'يُحدد بالمحافظة';
-    else if (ship === 0 && afterDisc >= 1999) sh.innerHTML = '<span style="color:#25D366">مجاناً 🎉</span>';
+    else if (ship === 0 && rawTotal >= 1999) sh.innerHTML = '<span style="color:#25D366">مجاناً 🎉</span>';
     else sh.textContent = ship.toLocaleString() + ' ج.م';
 
     document.getElementById('sum-total').textContent = (afterDisc + ship).toLocaleString() + ' ج.م';

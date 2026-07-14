@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تسجيل دخول الأدمن - متجر محرم</title>
-    <link rel="icon" href="../images/business card back 2.png" type="image/png">
+    <link rel="icon" href="/images/business card back 2.png" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="/admin/admin.css">
 </head>
 <body>
 
@@ -16,7 +16,7 @@
     <div class="login-card">
         <div class="login-card-cover"></div>
         <div class="login-avatar">
-            <img src="../images/logo.png" alt="شعار محرم" onerror="this.src='https://via.placeholder.com/90?text=Logo'">
+            <img src="/images/logo.png" alt="شعار محرم" onerror="this.src='https://via.placeholder.com/90?text=Logo'">
         </div>
         
         <div class="login-card-content">
@@ -77,7 +77,7 @@
 
 <!-- Supabase SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="admin-config.js"></script>
+<script src="/admin/admin-config.js"></script>
 <script>
     // Initialize Supabase
     const { createClient } = supabase;
@@ -87,7 +87,7 @@
     (async () => {
         const { data: { session } } = await sb.auth.getSession();
         if (session) {
-            window.location.href = 'dashboard.html';
+            window.location.href = '/admin/dashboard.html';
         }
     })();
 
@@ -112,7 +112,7 @@
             btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> تسجيل الدخول';
         } else {
             btn.innerHTML = '<i class="fas fa-check"></i> تم الدخول...';
-            setTimeout(() => { window.location.href = 'dashboard.html'; }, 500);
+            setTimeout(() => { window.location.href = '/admin/dashboard.html'; }, 500);
         }
     }
 

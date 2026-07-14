@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل دخول الأدمن - متجر محرم</title>
+    <link rel="icon" href="../images/business card back 2.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+<div class="login-page">
+    <div class="login-card">
+        <div class="login-card-cover"></div>
+        <div class="login-avatar">
+            <img src="../images/logo.png" alt="شعار محرم" onerror="this.src='https://via.placeholder.com/90?text=Logo'">
+        </div>
+        
+        <div class="login-card-content">
+            <div class="login-header">
+                <h2>متجر محرم</h2>
+                <p>لوحة تحكم الأدمن</p>
+            </div>
+
+            <form id="login-form" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="login-email">
+                        <i class="fas fa-envelope" style="margin-left:5px;color:var(--brown-mid)"></i>
+                        البريد الإلكتروني
+                    </label>
+                    <input
+                        type="email"
+                        id="login-email"
+                        placeholder="admin@example.com"
+                        required
+                        autocomplete="email"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="login-password">
+                        <i class="fas fa-lock" style="margin-left:5px;color:var(--brown-mid)"></i>
+                        كلمة المرور
+                    </label>
+                    <div style="position: relative;">
+                        <input
+                            type="password"
+                            id="login-password"
+                            placeholder="••••••••"
+                            required
+                            autocomplete="current-password"
+                            style="padding-left: 45px; width: 100%;"
+                        >
+                        <div style="position: absolute; left: 6px; top: 50%; transform: translateY(-50%); display: flex; align-items: center; justify-content: center; width: 34px; height: 34px; background: rgba(186,163,130,0.15); border-radius: 8px; cursor: pointer; color: var(--brown-dark); transition: 0.2s;" onclick="togglePasswordVisibility()" onmouseover="this.style.background='rgba(186,163,130,0.3)'" onmouseout="this.style.background='rgba(186,163,130,0.15)'">
+                            <i class="fas fa-eye-slash" id="togglePassword"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="login-btn" id="login-btn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    تسجيل الدخول
+                </button>
+
+                <div class="login-error" id="login-error">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span id="login-error-msg">بيانات غير صحيحة</span>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<!-- Supabase SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="admin-config.js"></script>
+<script>
+    // Initialize Supabase
+    const { createClient } = supabase;
+    const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // Check if already logged in
+    (async () => {
+        const { data: { session } } = await sb.auth.getSession();
+        if (session) {
+            window.location.href = 'dashboard.html';
+        }
+    })();
+
+    async function handleLogin(e) {
+        e.preventDefault();
+        const email    = document.getElementById('login-email').value.trim();
+        const password = document.getElementById('login-password').value;
+        const btn      = document.getElementById('login-btn');
+        const errBox   = document.getElementById('login-error');
+        const errMsg   = document.getElementById('login-error-msg');
+
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الدخول...';
+        errBox.style.display = 'none';
+
+        const { error } = await sb.auth.signInWithPassword({ email, password });
+
+        if (error) {
+            errMsg.textContent = 'البريد الإلكتروني أو كلمة المرور غير صحيحة';
+            errBox.style.display = 'block';
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> تسجيل الدخول';
+        } else {
+            btn.innerHTML = '<i class="fas fa-check"></i> تم الدخول...';
+            setTimeout(() => { window.location.href = 'dashboard.html'; }, 500);
+        }
+    }
+
+    function togglePasswordVisibility() {
+        const passInput = document.getElementById('login-password');
+        const icon = document.getElementById('togglePassword');
+        if (passInput.type === 'password') {
+            passInput.type = 'text';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        } else {
+            passInput.type = 'password';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        }
+    }
+</script>
+
+</body>
+</html>

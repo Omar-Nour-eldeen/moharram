@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -48,7 +48,7 @@
             <div class="collapse navbar-collapse justify-content-center" id="mainNav">
                 <ul class="navbar-nav fw-bold gap-lg-3 mt-3 mt-lg-0 text-center">
                     <li class="nav-item"><a class="nav-link text-brown-dark" href="index.html">الرئيسية</a></li>
-                    <li class="nav-item"><a class="nav-link text-brown-dark" href="index.html#products">المنتجات</a></li>
+                    <li class="nav-item"><a class="nav-link text-brown-dark" href="index.html#products-dynamic-wrapper">المنتجات</a></li>
                     <li class="nav-item"><a class="nav-link active text-brown-dark" href="wishlist.html">المفضلة</a></li>
                     <li class="nav-item"><a class="nav-link text-brown-dark" href="index.html#social">تواصل معنا</a></li>
                 </ul>
@@ -91,8 +91,8 @@
                 كل ما أضفته للمفضلة جاهز للرجوع إليه وطلبه في أي وقت بسهولة
             </p>
             <div class="hero-btns d-flex justify-content-center gap-3 mt-4">
-                <a href="index.html#products" class="btn-primary text-decoration-none">
-                    <i class="fas fa-store"></i> تصفح المنتجات
+                <a href="index.html#products-dynamic-wrapper" class="btn-primary text-decoration-none">
+                    <i class="fas fa-store"></i> تسوق الآن
                 </a>
                 <a href="index.html#social" class="btn-outline text-decoration-none">
                     <i class="fas fa-headset"></i> تواصل معنا
@@ -127,7 +127,7 @@
             <div style="font-size: 80px; margin-bottom: 20px; opacity: 0.3;">🤍</div>
             <h3 class="fw-bold mb-3" style="color: var(--brown-dark);">المفضلة فارغة</h3>
             <p class="text-muted mb-4" style="font-size: 14px;">لم تقم بإضافة أي منتجات إلى المفضلة بعد.<br>تصفح منتجاتنا وأضف ما يعجبك!</p>
-            <a href="index.html#products" class="btn-primary text-decoration-none" style="display:inline-flex; align-items:center; gap:8px;">
+            <a href="index.html#products-dynamic-wrapper" class="btn-primary text-decoration-none" style="display:inline-flex; align-items:center; gap:8px;">
                 <i class="fas fa-store"></i> تصفح المنتجات
             </a>
         </div>
@@ -181,7 +181,7 @@
                 </div>
                 <div class="col-12 col-md-6 col-lg-3 footer-col">
                     <h4>روابط سريعة</h4>
-                    <a href="index.html#products">المنتجات</a>
+                    <a href="index.html#products-dynamic-wrapper">المنتجات</a>
                     <a href="index.html#social">تواصل معنا</a>
                     <a href="https://wa.me/201067986822" target="_blank">اطلب الآن عبر واتساب</a>
                 </div>
@@ -435,9 +435,10 @@
             }, 300);
         }
 
-        // Sync counter
+        // Sync global variable and counter
+        wishlist = wl;
         updateWishlistCount();
-        showToast('🗑️ تم الحذف من المفضلة', 'error');
+        showToast('تم إزالة المنتج من المفضلة', 'error');
     }
 
     // Add all wishlist items to cart at once

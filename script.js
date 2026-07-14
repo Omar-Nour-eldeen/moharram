@@ -280,7 +280,7 @@ function filterCat(cat, btn) {
     });
 
     // إخفاء صفوف المنتجات الفارغة بعد الفلتر
-    document.querySelectorAll('section.container.pb-5 .row.g-4').forEach(row => {
+    document.querySelectorAll('#products-dynamic-wrapper .row.g-4').forEach(row => {
         const visibleCards = row.querySelectorAll('.product-card-container:not(.d-none)');
         row.classList.toggle('d-none', visibleCards.length === 0);
     });
@@ -336,11 +336,11 @@ function toggleWish(btn) {
 }
 
 function updateWishlistCount() {
-    const wCount = document.getElementById('wishlist-counter');
-    if (wCount) {
-        wCount.textContent = wishlist.length;
-        wCount.style.display = wishlist.length ? 'flex' : 'none';
-    }
+    const validWishlist = wishlist.filter(it => it && (it.title || it.name));
+    document.querySelectorAll('#wishlist-counter').forEach(wCount => {
+        wCount.textContent = validWishlist.length;
+        wCount.style.display = validWishlist.length ? 'flex' : 'none';
+    });
 }
 
 function renderWishlistPage() {
@@ -379,7 +379,7 @@ function renderWishlistPage() {
                     </div>
                 </div>
             </div>
-        `).join('') + `</div>`;
+`).join('') + `</div>`;
     } catch (err) {
         console.error("Error rendering wishlist:", err);
         container.innerHTML = '<div class="alert alert-danger text-center">حدث خطأ أثناء عرض المفضلة. الرجاء تفريغ المفضلة وإعادة المحاولة.</div>';
@@ -387,6 +387,7 @@ function renderWishlistPage() {
 }
 
 function removeWishlistItem(idx) {
+    wishlist = wishlist.filter(it => it && (it.title || it.name));
     wishlist.splice(idx, 1);
     localStorage.setItem('moharram_wishlist', JSON.stringify(wishlist));
     updateWishlistCount();
@@ -577,3 +578,236 @@ function draw() {
 }
 
 draw();
+
+/* ==== SUPABASE DYNAMIC PRODUCTS ==== */
+let allProducts = [];
+let allCategories = [];
+
+async function loadStoreData() {
+    try {
+        if (typeof supabase === 'undefined') {
+            document.getElementById('products-dynamic-wrapper').innerHTML = '<div class="alert alert-danger">Supabase not loaded</div>';
+            return;
+        }
+        if (typeof SUPABASE_URL === 'undefined') {
+            document.getElementById('products-dynamic-wrapper').innerHTML = '<div class="alert alert-danger">SUPABASE_URL not defined</div>';
+            return;
+        }
+        const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        const { data: catData, error: catErr } = await sb.from('categories').select('*').order('id', { ascending: true });
+        if (catErr) throw new Error('Categories error: ' + catErr.message);
+        if (catData) allCategories = catData;
+
+        const { data: prodData, error: prodErr } = await sb.from('products').select('*, categories(name, emoji, slug)').order('id', { ascending: true });
+        if (prodErr) throw new Error('Products error: ' + prodErr.message);
+        if (prodData) allProducts = prodData;
+
+        renderDynamicProducts();
+    } catch (err) {
+        const w = document.getElementById('products-dynamic-wrapper');
+        if (w) w.innerHTML = '<div class="alert alert-danger">Error: ' + err.message + '</div>';
+    }
+}
+
+function renderDynamicProducts() {
+    const wrapper = document.getElementById('products-dynamic-wrapper');
+    if (!wrapper) return;
+
+    if (!allProducts.length) {
+        wrapper.innerHTML = '<div class="text-center py-5"><p>لا توجد منتجات متاحة حالياً.</p></div>';
+        return;
+    }
+
+    wrapper.innerHTML = '';
+
+    // === FILTER TABS ===
+    const tabsContainer = document.createElement('div');
+    tabsContainer.className = 'container py-4';
+    tabsContainer.id = 'products-tabs';
+
+    const tabsRow = document.createElement('div');
+    tabsRow.className = 'd-flex justify-content-center flex-wrap gap-2';
+
+    const allBtn = document.createElement('button');
+    allBtn.className = 'filter-tab active bg-brown-dark text-white';
+    allBtn.textContent = 'الكل';
+    allBtn.onclick = function() { filterCat('all', this); };
+    tabsRow.appendChild(allBtn);
+
+    allCategories.forEach(function(cat) {
+        const catProds = allProducts.filter(function(p) { return p.category_id === cat.id; });
+        if (!catProds.length) return;
+        const btn = document.createElement('button');
+        btn.className = 'filter-tab';
+        btn.textContent = (cat.emoji || '') + ' ' + cat.name;
+        btn.onclick = function() { filterCat(cat.slug, this); };
+        tabsRow.appendChild(btn);
+    });
+
+    const hasOffers = allProducts.some(function(p) { return p.badge_type === 'offer'; });
+    if (hasOffers) {
+        const offBtn = document.createElement('button');
+        offBtn.className = 'filter-tab';
+        offBtn.textContent = '🔥 العروض';
+        offBtn.onclick = function() { filterCat('offers', this); };
+        tabsRow.appendChild(offBtn);
+    }
+
+    tabsContainer.appendChild(tabsRow);
+    wrapper.appendChild(tabsContainer);
+
+    // === CATEGORY SECTIONS ===
+    allCategories.forEach(function(cat) {
+        const catProds = allProducts.filter(function(p) { return p.category_id === cat.id; });
+        if (!catProds.length) return;
+
+        const header = document.createElement('div');
+        header.className = 'section-header d-flex align-items-center gap-3 mt-5 mb-4';
+        header.dataset.cat = cat.slug;
+        header.innerHTML = '<h2 class="section-title">' + (cat.emoji || '') + ' ' + cat.name + '</h2><div class="section-line"></div>';
+        wrapper.appendChild(header);
+
+        const row = document.createElement('div');
+        row.className = 'row g-4';
+        catProds.forEach(function(p, idx) {
+            row.appendChild(buildProductCard(p, cat.slug, idx));
+        });
+        wrapper.appendChild(row);
+    });
+
+    // === OFFERS SECTION ===
+    if (hasOffers) {
+        const offProds = allProducts.filter(function(p) { return p.badge_type === 'offer'; });
+
+        const header = document.createElement('div');
+        header.className = 'section-header d-flex align-items-center gap-3 mt-5 mb-4';
+        header.dataset.cat = 'offers';
+        header.innerHTML = '<h2 class="section-title">🔥 المجموعات وعروض التوفير</h2><div class="section-line"></div>';
+        wrapper.appendChild(header);
+
+        const row = document.createElement('div');
+        row.className = 'row g-4';
+        offProds.forEach(function(p, idx) {
+            row.appendChild(buildProductCard(p, 'offers', idx));
+        });
+        wrapper.appendChild(row);
+    }
+
+    // Re-apply wishlist states
+    document.querySelectorAll('.product-card').forEach(function(card) {
+        const titleEl = card.querySelector('.product-title');
+        if (!titleEl) return;
+        const name = titleEl.innerText;
+        if (wishlist.some(function(i) { return i && (i.title === name || i.name === name); })) {
+            const btn = card.querySelector('.wishlist-btn');
+            if (btn) {
+                const ic = btn.querySelector('i');
+                ic.classList.remove('far');
+                ic.classList.add('fas');
+                ic.style.color = 'var(--red)';
+                btn.classList.add('active');
+            }
+        }
+    });
+
+    if (typeof AOS !== 'undefined') AOS.refresh();
+}
+
+function buildProductCard(p, dataCat, index) {
+    const col = document.createElement('div');
+    col.className = 'col-12 col-sm-6 col-lg-3 product-card-container';
+    col.dataset.cat = dataCat;
+
+    const isOffer = p.badge_type === 'offer';
+    const isFeatured = p.badge_type === 'featured';
+
+    const card = document.createElement('div');
+    card.className = 'card h-100 product-card ' + (isOffer ? 'border-2 border-danger' : 'border-0');
+    col.appendChild(card);
+
+    // Badge
+    if (isFeatured) {
+        const badge = document.createElement('div');
+        badge.className = 'highlight-badge';
+        badge.textContent = p.badge || 'مميز';
+        card.appendChild(badge);
+    } else if (isOffer) {
+        const badge = document.createElement('div');
+        badge.className = 'discount-tag';
+        badge.textContent = p.badge || 'عرض';
+        card.appendChild(badge);
+    }
+
+    // Image
+    const imgWrap = document.createElement('div');
+    imgWrap.className = 'product-image';
+    const fallback = (p.categories && p.categories.emoji) ? p.categories.emoji : '🍯';
+    if (p.image_url) {
+        const img = document.createElement('img');
+        img.src = p.image_url;
+        img.alt = p.name;
+        img.onerror = function() {
+            imgWrap.innerHTML = '<span class="ph-icon">' + fallback + '</span>';
+        };
+        imgWrap.appendChild(img);
+    } else {
+        imgWrap.innerHTML = '<span class="ph-icon">' + fallback + '</span>';
+    }
+    card.appendChild(imgWrap);
+
+    // Body
+    const body = document.createElement('div');
+    body.className = 'card-body product-body d-flex flex-column';
+
+    const catLabelEl = document.createElement('div');
+    catLabelEl.className = 'product-category';
+    catLabelEl.textContent = p.cat_label || (p.categories && p.categories.name) || 'منتج';
+    body.appendChild(catLabelEl);
+
+    const titleEl = document.createElement('h3');
+    titleEl.className = 'product-title';
+    titleEl.textContent = p.name;
+    body.appendChild(titleEl);
+
+    const descEl = document.createElement('p');
+    descEl.className = 'product-desc flex-grow-1 pt-3';
+    descEl.textContent = p.description || '';
+    body.appendChild(descEl);
+
+    const priceRow = document.createElement('div');
+    priceRow.className = 'product-price-row';
+    if (p.old_price) {
+        priceRow.innerHTML = '<span class="old-price">' + Number(p.old_price).toLocaleString() + ' ج.م</span>' +
+            '<span class="product-price text-danger">' + Number(p.price).toLocaleString() + ' ج.م</span>';
+    } else {
+        priceRow.innerHTML = '<span class="product-price">' + Number(p.price).toLocaleString() + ' ج.م</span>' +
+            (p.unit ? '<span class="price-unit">/ ' + p.unit + '</span>' : '');
+    }
+    body.appendChild(priceRow);
+
+    const btns = document.createElement('div');
+    btns.className = 'd-flex gap-2 mt-auto';
+
+    const cartName = p.name.replace(/'/g, "\\\\'");
+    const cartBtn = document.createElement('button');
+    cartBtn.className = 'add-to-cart-btn';
+    cartBtn.innerHTML = '<i class="fas fa-cart-plus"></i> أضف للسلة';
+    cartBtn.setAttribute('onclick', `addToCart('${cartName}', ${p.price})`);
+    btns.appendChild(cartBtn);
+
+    const wishBtn = document.createElement('button');
+    wishBtn.className = 'wishlist-btn';
+    wishBtn.innerHTML = '<i class="far fa-heart"></i>';
+    wishBtn.setAttribute('onclick', 'toggleWish(this)');
+    btns.appendChild(wishBtn);
+
+    body.appendChild(btns);
+    card.appendChild(body);
+
+    return col;
+}
+
+window.addEventListener('load', function() {
+    loadStoreData();
+});

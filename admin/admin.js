@@ -153,6 +153,7 @@ async function loadProducts() {
     allProducts = data || [];
     updateStats();
     renderProductsTable(allProducts);
+    renderCategoriesTable();
 }
 
 function updateStats() {

@@ -22,15 +22,15 @@ if (cart.length > 0) {
 }
 
 /* ---- ADD TO CART ---- */
-function addToCart(name, price) {
-    const ex = cart.find(i => i.name === name);
-    if (ex) { ex.qty++; } else { cart.push({ name, price, qty: 1 }); }
+function addToCart(id, name, price) {
+    price = parseFloat(price) || 0;  // تأكد أن السعر رقم دائماً
+    const ex = cart.find(i => (i.id && i.id == id) || (!i.id && i.name === name));
+    if (ex) { ex.qty++; ex.id = id; ex.name = name; ex.price = price; } else { cart.push({ id, name, price, qty: 1 }); }
     rawTotal += price;
     saveCart();
     refreshCounters();
     showToast('✅ أُضيف للسلة: ' + name.split('(')[0].trim(), 'success');
     renderCart();
-    // لا تفتح السلة تلقائياً
 }
 
 // Add event listener for flying animation
@@ -50,7 +50,6 @@ document.addEventListener('click', function (e) {
 function flyToCartAnimation(imgEl) {
     let cartIcon = document.querySelector('.float-cart-btn');
     if (!cartIcon || window.getComputedStyle(cartIcon).display === 'none' || cartIcon.offsetParent === null) {
-        // Fallback to header cart icon if floating cart is hidden or missing
         cartIcon = document.querySelector('button[onclick="openCart()"]');
     }
     if (!cartIcon || !imgEl) return;
@@ -74,11 +73,8 @@ function flyToCartAnimation(imgEl) {
     });
 
     document.body.appendChild(clone);
-
-    // Trigger reflow
     clone.getBoundingClientRect();
 
-    // Move to cart
     Object.assign(clone.style, {
         top: `${cartRect.top + cartRect.height / 2 - imgRect.height / 2}px`,
         left: `${cartRect.left + cartRect.width / 2 - imgRect.width / 2}px`,
@@ -86,7 +82,6 @@ function flyToCartAnimation(imgEl) {
         opacity: '0.2'
     });
 
-    // Pop effect
     setTimeout(() => {
         clone.remove();
         cartIcon.style.transition = 'transform 0.2s';
@@ -211,7 +206,7 @@ function applyDiscount() {
     updateSummary();
 }
 
-/* ---- OPEN CART (Legacy wrapper for floating button) ---- */
+/* ---- OPEN CART ---- */
 function openCart() {
     const cartOffcanvasEl = document.getElementById('cartOffcanvas');
     if (cartOffcanvasEl) {
@@ -237,7 +232,6 @@ function sendOrder() {
         showToast('❌ رقم الهاتف غير صحيح (مثال: 01012345678)', 'error');
         return;
     }
-
 
     const discAmt = rawTotal * discount;
     const after = rawTotal - discAmt;
@@ -266,10 +260,8 @@ function filterCat(cat, btn) {
         c.classList.toggle('d-none', !show);
     });
 
-    // إخفاء عناوين الأقسام الأخرى بشكل صحيح
     document.querySelectorAll('.section-header').forEach(h => {
         const show = (cat === 'all' || h.dataset.cat === cat);
-        // نستخدم classList بدلاً من style.display لتجنب تعارض !important مع Bootstrap
         if (show) {
             h.classList.remove('d-none');
             h.classList.add('d-flex');
@@ -279,7 +271,6 @@ function filterCat(cat, btn) {
         }
     });
 
-    // إخفاء صفوف المنتجات الفارغة بعد الفلتر
     document.querySelectorAll('#products-dynamic-wrapper .row.g-4').forEach(row => {
         const visibleCards = row.querySelectorAll('.product-card-container:not(.d-none)');
         row.classList.toggle('d-none', visibleCards.length === 0);
@@ -289,7 +280,7 @@ function filterCat(cat, btn) {
 }
 
 /* ---- WISHLIST ---- */
-function toggleWish(btn) {
+function toggleWish(btn, id) {
     const card = btn.closest('.product-card');
     const title = card.querySelector('.product-title').innerText;
 
@@ -300,20 +291,26 @@ function toggleWish(btn) {
     if (cartBtn) {
         const onclickAttr = cartBtn.getAttribute('onclick');
         if (onclickAttr) {
-            // Extract the exact name used in the cart and the price
-            const match = onclickAttr.match(/addToCart\('([^']+)',\s*(\d+)\)/);
-            if (match) {
-                cartName = match[1];
-                price = parseInt(match[2]);
+            // Match: addToCart('id', 'name', price)
+            const match3 = onclickAttr.match(/addToCart\('([^']+)',\s*'([^']+)',\s*(\d+)\)/);
+            // Match: addToCart('name', price)  -- legacy
+            const match2 = onclickAttr.match(/addToCart\('([^']+)',\s*(\d+)\)/);
+            if (match3) {
+                cartName = match3[2];
+                price = parseInt(match3[3]);
+            } else if (match2) {
+                cartName = match2[1];
+                price = parseInt(match2[2]);
             }
         }
     }
 
-    const img = card.querySelector('img').src;
+    const imgEl = card.querySelector('img');
+    const img = imgEl ? imgEl.src : '';
     const cat = card.querySelector('.product-category').innerText;
 
-    // Check by title (for display) or name (legacy support)
-    let index = wishlist.findIndex(i => i && (i.title === title || i.name === title));
+    // Check by id or title (legacy)
+    let index = wishlist.findIndex(i => (id && i.id == id) || (!id && i && (i.title === title || i.name === title)));
     const ic = btn.querySelector('i');
 
     if (index > -1) {
@@ -324,7 +321,7 @@ function toggleWish(btn) {
         btn.classList.remove('active');
         showToast('🗑️ تم الحذف من المفضلة', 'error');
     } else {
-        wishlist.push({ title, name: title, cartName, price, img, cat });
+        wishlist.push({ id, title, name: title, cartName, price, img, cat });
         ic.classList.remove('far');
         ic.classList.add('fas');
         ic.style.color = 'var(--red)';
@@ -373,7 +370,7 @@ function renderWishlistPage() {
                         <h3 class="product-title">${it.title || it.name}</h3>
                         <p class="product-desc flex-grow-1"></p>
                         <div class="product-price-row mb-3"><span class="product-price">${Number(it.price || 0).toLocaleString()} ج.م</span></div>
-                        <button class="add-to-cart-btn mt-auto" onclick="addToCart('${it.cartName || it.name}', ${it.price || 0})">
+                        <button class="add-to-cart-btn mt-auto" onclick="addToCart('${it.id || ''}', '${it.cartName || it.name}', ${it.price || 0})">
                             <i class="fas fa-cart-plus"></i> أضف للسلة
                         </button>
                     </div>
@@ -406,20 +403,16 @@ function toggleSocial() {
 /* ---- TOAST ---- */
 let toastT;
 function showToast(msg, type) {
-    // type: 'success' (green), 'error' (red), 'info' (blue), 'warn' (orange)
     const t = document.getElementById('toast');
     const icon = t.querySelector('i');
     const msgEl = document.getElementById('toast-msg');
 
-    // Reset classes
     t.classList.remove('toast-error', 'toast-info', 'toast-warn');
 
     if (type === 'error') t.classList.add('toast-error');
     else if (type === 'info') t.classList.add('toast-info');
     else if (type === 'warn') t.classList.add('toast-warn');
-    // default = success (green)
 
-    // Icon
     if (type === 'error') icon.className = 'fas fa-times-circle';
     else if (type === 'info') icon.className = 'fas fa-heart';
     else if (type === 'warn') icon.className = 'fas fa-exclamation-circle';
@@ -438,7 +431,6 @@ function sendContactMsg(e) {
     const phone = document.getElementById('contact-phone').value.trim();
     const msg = document.getElementById('contact-msg').value.trim();
 
-    // Validate each field individually with a specific toast
     if (!name) {
         showToast('⚠️ من فضلك أدخل اسمك', 'warn');
         document.getElementById('contact-name').focus();
@@ -473,7 +465,6 @@ function sendContactMsg(e) {
 
 /* ---- INITIALIZATION ---- */
 document.addEventListener("DOMContentLoaded", function () {
-    // Initialize AOS Animation Library
     if (typeof AOS !== 'undefined') {
         AOS.init({
             duration: 800,
@@ -482,7 +473,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Refresh Counters on load
     refreshCounters();
     updateWishlistCount();
     renderCart();
@@ -492,7 +482,8 @@ document.addEventListener("DOMContentLoaded", function () {
         const titleEl = card.querySelector('.product-title');
         if (!titleEl) return;
         const name = titleEl.innerText;
-        if (wishlist.some(i => i && (i.title === name || i.name === name))) {
+        const cardId = card.dataset.id;
+        if (wishlist.some(i => i && ((i.id && i.id == cardId) || (!i.id && (i.title === name || i.name === name))))) {
             const btn = card.querySelector('.wishlist-btn');
             if (btn) {
                 const ic = btn.querySelector('i');
@@ -582,6 +573,7 @@ draw();
 /* ==== SUPABASE DYNAMIC PRODUCTS ==== */
 let allProducts = [];
 let allCategories = [];
+let sbClient = null;  // global client علشان الـ Realtime يفضل شغال
 
 async function loadStoreData() {
     try {
@@ -593,20 +585,96 @@ async function loadStoreData() {
             document.getElementById('products-dynamic-wrapper').innerHTML = '<div class="alert alert-danger">SUPABASE_URL not defined</div>';
             return;
         }
-        const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        const { data: catData, error: catErr } = await sb.from('categories').select('*').order('sort_order', { ascending: true }).order('id', { ascending: true });
+        // إنشاء client واحد غلوبال يفضل شغال مع الـ Realtime
+        if (!sbClient) {
+            sbClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+            // ===== REALTIME: تحديث فوري عند تغيير المنتجات =====
+            sbClient.channel('store-realtime')
+                .on('postgres_changes', { event: '*', schema: 'public', table: 'products' }, async (payload) => {
+                    console.log('🔄 Products Realtime update:', payload);
+                    const { data: newProdData } = await sbClient
+                        .from('products')
+                        .select('*, categories(name, emoji, slug)')
+                        .order('id', { ascending: true });
+                    if (newProdData) allProducts = newProdData;
+                    syncPricesWithDB();
+                    renderDynamicProducts();
+                })
+                .on('postgres_changes', { event: '*', schema: 'public', table: 'categories' }, async (payload) => {
+                    console.log('🔄 Categories Realtime update:', payload);
+                    const { data: newCatData } = await sbClient
+                        .from('categories')
+                        .select('*')
+                        .order('sort_order', { ascending: true })
+                        .order('id', { ascending: true });
+                    if (newCatData) allCategories = newCatData;
+                    renderDynamicProducts();
+                })
+                .subscribe((status) => {
+                    console.log('🟢 Realtime status:', status);
+                });
+        }
+
+        const { data: catData, error: catErr } = await sbClient.from('categories').select('*').order('sort_order', { ascending: true }).order('id', { ascending: true });
         if (catErr) throw new Error('Categories error: ' + catErr.message);
         if (catData) allCategories = catData;
 
-        const { data: prodData, error: prodErr } = await sb.from('products').select('*, categories(name, emoji, slug)').order('id', { ascending: true });
+        const { data: prodData, error: prodErr } = await sbClient.from('products').select('*, categories(name, emoji, slug)').order('id', { ascending: true });
         if (prodErr) throw new Error('Products error: ' + prodErr.message);
         if (prodData) allProducts = prodData;
 
+        syncPricesWithDB();
         renderDynamicProducts();
+
     } catch (err) {
         const w = document.getElementById('products-dynamic-wrapper');
         if (w) w.innerHTML = '<div class="alert alert-danger">Error: ' + err.message + '</div>';
+    }
+}
+
+function syncPricesWithDB() {
+    let cartChanged = false;
+    cart.forEach(item => {
+        const dbProduct = allProducts.find(p => p.id == item.id || (!item.id && p.name === item.name));
+        if (dbProduct) {
+            if (!item.id || item.name !== dbProduct.name || item.price !== dbProduct.price) {
+                item.id = dbProduct.id;
+                item.name = dbProduct.name;
+                item.price = dbProduct.price;
+                cartChanged = true;
+            }
+        }
+    });
+
+    if (cartChanged) {
+        rawTotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+        saveCart();
+        renderCart();
+    }
+
+    let wishlistChanged = false;
+    wishlist.forEach(item => {
+        const dbProduct = allProducts.find(p => p.id == item.id || (!item.id && (p.name === item.title || p.name === item.name)));
+        if (dbProduct) {
+            if (!item.id || item.title !== dbProduct.name || item.price !== dbProduct.price || item.img !== dbProduct.image_url || item.cat !== (dbProduct.categories && dbProduct.categories.name)) {
+                item.id = dbProduct.id;
+                item.title = dbProduct.name;
+                item.name = dbProduct.name;
+                item.price = dbProduct.price;
+                if (dbProduct.image_url) item.img = dbProduct.image_url;
+                if (dbProduct.categories && dbProduct.categories.name) item.cat = dbProduct.categories.name;
+                wishlistChanged = true;
+            }
+        }
+    });
+
+    if (wishlistChanged) {
+        localStorage.setItem('moharram_wishlist', JSON.stringify(wishlist));
+        if (document.getElementById('wishlist-page-container')) {
+            renderWishlistPage();
+        }
     }
 }
 
@@ -672,7 +740,8 @@ function renderDynamicProducts() {
         const titleEl = card.querySelector('.product-title');
         if (!titleEl) return;
         const name = titleEl.innerText;
-        if (wishlist.some(function(i) { return i && (i.title === name || i.name === name); })) {
+        const cardId = card.dataset.id;
+        if (wishlist.some(function(i) { return i && ((i.id && i.id == cardId) || (!i.id && (i.title === name || i.name === name))); })) {
             const btn = card.querySelector('.wishlist-btn');
             if (btn) {
                 const ic = btn.querySelector('i');
@@ -697,6 +766,7 @@ function buildProductCard(p, dataCat, index) {
 
     const card = document.createElement('div');
     card.className = 'card h-100 product-card ' + (isOffer ? 'border-2 border-danger' : 'border-0');
+    card.dataset.id = p.id;
     col.appendChild(card);
 
     // Badge
@@ -762,17 +832,17 @@ function buildProductCard(p, dataCat, index) {
     const btns = document.createElement('div');
     btns.className = 'd-flex gap-2 mt-auto';
 
-    const cartName = p.name.replace(/'/g, "\\\\'");
+    const cartName = p.name.replace(/'/g, "\\'");
     const cartBtn = document.createElement('button');
     cartBtn.className = 'add-to-cart-btn';
     cartBtn.innerHTML = '<i class="fas fa-cart-plus"></i> أضف للسلة';
-    cartBtn.setAttribute('onclick', `addToCart('${cartName}', ${p.price})`);
+    cartBtn.setAttribute('onclick', `addToCart('${p.id}', '${cartName}', ${p.price})`);
     btns.appendChild(cartBtn);
 
     const wishBtn = document.createElement('button');
     wishBtn.className = 'wishlist-btn';
     wishBtn.innerHTML = '<i class="far fa-heart"></i>';
-    wishBtn.setAttribute('onclick', 'toggleWish(this)');
+    wishBtn.setAttribute('onclick', `toggleWish(this, '${p.id}')`);
     btns.appendChild(wishBtn);
 
     body.appendChild(btns);

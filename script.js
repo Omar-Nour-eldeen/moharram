@@ -595,7 +595,7 @@ async function loadStoreData() {
         }
         const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        const { data: catData, error: catErr } = await sb.from('categories').select('*').order('id', { ascending: true });
+        const { data: catData, error: catErr } = await sb.from('categories').select('*').order('sort_order', { ascending: true }).order('id', { ascending: true });
         if (catErr) throw new Error('Categories error: ' + catErr.message);
         if (catData) allCategories = catData;
 
@@ -640,19 +640,10 @@ function renderDynamicProducts() {
         if (!catProds.length) return;
         const btn = document.createElement('button');
         btn.className = 'filter-tab';
-        btn.textContent = (cat.emoji || '') + ' ' + cat.name;
+        btn.textContent = (cat.emoji || '') + ' ' + (cat.slug || cat.name);
         btn.onclick = function() { filterCat(cat.slug, this); };
         tabsRow.appendChild(btn);
     });
-
-    const hasOffers = allProducts.some(function(p) { return p.badge_type === 'offer'; });
-    if (hasOffers) {
-        const offBtn = document.createElement('button');
-        offBtn.className = 'filter-tab';
-        offBtn.textContent = '🔥 العروض';
-        offBtn.onclick = function() { filterCat('offers', this); };
-        tabsRow.appendChild(offBtn);
-    }
 
     tabsContainer.appendChild(tabsRow);
     wrapper.appendChild(tabsContainer);
@@ -675,24 +666,6 @@ function renderDynamicProducts() {
         });
         wrapper.appendChild(row);
     });
-
-    // === OFFERS SECTION ===
-    if (hasOffers) {
-        const offProds = allProducts.filter(function(p) { return p.badge_type === 'offer'; });
-
-        const header = document.createElement('div');
-        header.className = 'section-header d-flex align-items-center gap-3 mt-5 mb-4';
-        header.dataset.cat = 'offers';
-        header.innerHTML = '<h2 class="section-title">🔥 المجموعات وعروض التوفير</h2><div class="section-line"></div>';
-        wrapper.appendChild(header);
-
-        const row = document.createElement('div');
-        row.className = 'row g-4';
-        offProds.forEach(function(p, idx) {
-            row.appendChild(buildProductCard(p, 'offers', idx));
-        });
-        wrapper.appendChild(row);
-    }
 
     // Re-apply wishlist states
     document.querySelectorAll('.product-card').forEach(function(card) {

@@ -66,6 +66,7 @@ async function loadCategories() {
     const { data, error } = await sb
         .from('categories')
         .select('*')
+        .order('sort_order', { ascending: true })
         .order('id', { ascending: true });
 
     if (error) { showToast('خطأ في تحميل الفئات', 'error'); return; }
@@ -472,6 +473,7 @@ function openCategoryModal(cat = null) {
     document.getElementById('c-name').value      = cat?.name  || '';
     document.getElementById('c-emoji').value     = cat?.emoji || '';
     document.getElementById('c-slug').value      = cat?.slug  || '';
+    document.getElementById('c-sort-order').value = cat?.sort_order || '';
 
     document.getElementById('category-modal').classList.add('open');
 }
@@ -490,15 +492,23 @@ async function saveCategory() {
     const name  = document.getElementById('c-name').value.trim();
     const emoji = document.getElementById('c-emoji').value.trim();
     const slug  = document.getElementById('c-slug').value.trim().toLowerCase().replace(/\s+/g, '_');
+    let sortOrder = document.getElementById('c-sort-order').value.trim();
 
     if (!name) { showToast('أدخل اسم الفئة', 'error'); return; }
     if (!slug) { showToast('أدخل الـ slug', 'error'); return; }
+
+    if (sortOrder === '') {
+        const maxSort = allCategories.length > 0 ? Math.max(...allCategories.map(c => c.sort_order || 0)) : 0;
+        sortOrder = maxSort + 1;
+    } else {
+        sortOrder = parseInt(sortOrder, 10);
+    }
 
     const btn = document.getElementById('save-category-btn');
     btn.disabled = true;
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
 
-    const payload = { name, emoji: emoji || null, slug };
+    const payload = { name, emoji: emoji || null, slug, sort_order: sortOrder };
     let error;
 
     if (id) {

@@ -100,10 +100,10 @@ function renderCategoriesTable() {
                 const count = allProducts.filter(p => p.category_id === cat.id).length;
                 return `
                 <tr>
-                    <td style="font-size:22px">${cat.emoji || '—'}</td>
-                    <td><strong>${cat.name}</strong></td>
-                    <td><code style="background:var(--bg-cream);padding:2px 8px;border-radius:6px;font-size:12px">${cat.slug}</code></td>
-                    <td><span style="font-weight:700;color:var(--brown-mid)">${count}</span></td>
+                    <td data-label="الإيموجي" style="font-size:22px">${cat.emoji || '—'}</td>
+                    <td data-label="الفئة"><strong>${cat.name}</strong></td>
+                    <td data-label="Slug"><code style="background:var(--bg-cream);padding:2px 8px;border-radius:6px;font-size:12px">${cat.slug}</code></td>
+                    <td data-label="المنتجات"><span style="font-weight:700;color:var(--brown-mid)">${count}</span></td>
                     <td>
                         <div class="td-actions">
                             <button class="btn btn-outline btn-icon btn-sm" onclick="editCategory('${cat.id}')" title="تعديل">
@@ -195,17 +195,17 @@ function renderProductsTable(products) {
 
                 return `
                 <tr>
-                    <td>${imgHtml}</td>
-                    <td>
+                    <td data-label="الصورة">${imgHtml}</td>
+                    <td data-label="المنتج">
                         <strong style="font-size:13px">${p.name}</strong>
                         ${p.description ? `<br><small style="color:var(--text-muted);font-size:11px">${p.description.slice(0,50)}${p.description.length>50?'...':''}</small>` : ''}
                     </td>
-                    <td><span style="font-size:13px">${catName}</span></td>
-                    <td><strong style="color:var(--brown-dark)">${Number(p.price).toLocaleString()} ج.م</strong>
+                    <td data-label="الفئة"><span style="font-size:13px">${catName}</span></td>
+                    <td data-label="السعر"><strong style="color:var(--brown-dark)">${Number(p.price).toLocaleString()} ج.م</strong>
                         ${p.old_price ? `<br><small style="text-decoration:line-through;color:#bbb">${Number(p.old_price).toLocaleString()}</small>` : ''}
                     </td>
-                    <td style="color:var(--text-muted);font-size:12px">${p.unit || '—'}</td>
-                    <td>${badge}</td>
+                    <td data-label="الوحدة" style="color:var(--text-muted);font-size:12px">${p.unit || '—'}</td>
+                    <td data-label="Badge">${badge}</td>
                     <td>
                         <div class="td-actions">
                             <button class="btn btn-outline btn-icon btn-sm" onclick="editProduct('${p.id}')" title="تعديل">

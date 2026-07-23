@@ -292,15 +292,15 @@ function toggleWish(btn, id) {
         const onclickAttr = cartBtn.getAttribute('onclick');
         if (onclickAttr) {
             // Match: addToCart('id', 'name', price)
-            const match3 = onclickAttr.match(/addToCart\('([^']+)',\s*'([^']+)',\s*(\d+)\)/);
+            const match3 = onclickAttr.match(/addToCart\('([^']+)',\s*'([^']+)',\s*([\d.]+)\)/);
             // Match: addToCart('name', price)  -- legacy
-            const match2 = onclickAttr.match(/addToCart\('([^']+)',\s*(\d+)\)/);
+            const match2 = onclickAttr.match(/addToCart\('([^']+)',\s*([\d.]+)\)/);
             if (match3) {
                 cartName = match3[2];
-                price = parseInt(match3[3]);
+                price = parseFloat(match3[3]);
             } else if (match2) {
                 cartName = match2[1];
-                price = parseInt(match2[2]);
+                price = parseFloat(match2[2]);
             }
         }
     }

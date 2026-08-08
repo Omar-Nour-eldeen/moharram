@@ -44,6 +44,11 @@
                 الفئات
             </button>
 
+            <button class="nav-item" id="nav-discounts" onclick="showPage('discounts')">
+                <i class="fas fa-percent"></i>
+                أكواد الخصم
+            </button>
+
             <div class="sidebar-section-label" style="margin-top:12px;">الموقع</div>
             <a href="/" class="nav-item">
                 <i class="fas fa-external-link-alt"></i>
@@ -155,6 +160,45 @@
                 </div>
             </div>
 
+            <!-- ===== DISCOUNTS PAGE ===== -->
+            <div class="page" id="page-discounts">
+
+                <!-- Stats -->
+                <div class="discount-stats" id="discount-stats-grid">
+                    <div class="discount-stat-card">
+                        <div class="ds-icon" style="background:rgba(186,163,130,0.15)">🏷️</div>
+                        <div class="ds-info">
+                            <h3 id="ds-total">0</h3>
+                            <p>إجمالي الأكواد</p>
+                        </div>
+                    </div>
+                    <div class="discount-stat-card">
+                        <div class="ds-icon" style="background:rgba(39,174,96,0.12)">✅</div>
+                        <div class="ds-info">
+                            <h3 id="ds-active">0</h3>
+                            <p>أكواد مفعّلة</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="section-card">
+                    <div class="section-card-header">
+                        <h5><i class="fas fa-percent" style="color:var(--brown-mid)"></i> أكواد الخصم</h5>
+                        <button class="btn btn-primary" id="add-discount-btn" onclick="openDiscountModal()">
+                            <i class="fas fa-plus"></i>
+                            إضافة كود
+                        </button>
+                    </div>
+                    <div class="table-wrap" id="discounts-table-wrap">
+                        <div class="loading-state">
+                            <div class="spinner"></div>
+                            <p>جاري تحميل الأكواد...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div><!-- /page-content -->
     </div><!-- /main-content -->
 </div><!-- /dashboard-layout -->
@@ -246,6 +290,70 @@
             <button class="btn btn-primary" id="save-product-btn" onclick="saveProduct()">
                 <i class="fas fa-save"></i>
                 حفظ المنتج
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ===== DISCOUNT MODAL ===== -->
+<div class="modal-overlay" id="discount-modal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h5 id="discount-modal-title"><i class="fas fa-percent" style="color:var(--brown-mid);margin-left:8px"></i> إضافة كود خصم</h5>
+            <button class="modal-close" onclick="closeDiscountModal()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="discount-id">
+
+            <div class="fields-row">
+                <div class="field">
+                    <label>كود الخصم *</label>
+                    <input type="text" id="d-code" placeholder="مثال: SUMMER20" style="text-transform:uppercase;letter-spacing:2px;font-weight:700;">
+                    <div class="field-hint">سيتم تحويله تلقائياً للحروف الكبيرة</div>
+                </div>
+                <div class="field">
+                    <label>نوع الخصم *</label>
+                    <select id="d-type" onchange="updateDiscountSuffix()">
+                        <option value="percent">نسبة مئوية (%)</option>
+                        <option value="fixed">مبلغ ثابت (ج.م)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="fields-row">
+                <div class="field">
+                    <label>قيمة الخصم *</label>
+                    <div class="discount-value-wrap">
+                        <input type="number" id="d-value" placeholder="مثال: 10" min="0">
+                        <span class="disc-suffix" id="d-suffix">%</span>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>تاريخ الانتهاء</label>
+                    <input type="date" id="d-expires">
+                    <div class="field-hint">اتركه فارغاً = لا ينتهي</div>
+                </div>
+            </div>
+
+            <div class="fields-row">
+                <div class="field" style="display:flex;align-items:center;gap:10px;">
+                    <label style="margin:0">مفعّل</label>
+                    <label class="toggle-switch" id="d-active-label">
+                        <input type="checkbox" id="d-active" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="field">
+                    <label>ملاحظة (اختياري)</label>
+                    <input type="text" id="d-desc" placeholder="مثال: كود خاص بحملة رمضان">
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline" onclick="closeDiscountModal()">إلغاء</button>
+            <button class="btn btn-primary" id="save-discount-btn" onclick="saveDiscount()">
+                <i class="fas fa-save"></i>
+                حفظ الكود
             </button>
         </div>
     </div>

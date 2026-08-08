@@ -8,6 +8,7 @@ const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 // ── State ──────────────────────────────────────────────────────
 let allProducts   = [];
 let allCategories = [];
+let allDiscounts  = [];
 let currentImageFile = null;
 let currentImageUrl  = null;
 let confirmCallback  = null;
@@ -28,6 +29,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     await loadCategories();
     await loadProducts();
+    await loadDiscountCodes();
 });
 
 // ══════════════════════════════════════════════════════════════
@@ -41,8 +43,9 @@ function showPage(page) {
     document.getElementById('nav-' + page).classList.add('active');
 
     const titles = {
-        products:   { title: 'إدارة المنتجات',  sub: 'إضافة وتعديل وحذف المنتجات' },
-        categories: { title: 'إدارة الفئات',    sub: 'إضافة وتعديل وحذف الفئات'   }
+        products:   { title: 'إدارة المنتجات',   sub: 'إضافة وتعديل وحذف المنتجات' },
+        categories: { title: 'إدارة الفئات',    sub: 'إضافة وتعديل وحذف الفئات'   },
+        discounts:  { title: 'أكواد الخصم',   sub: 'إضافة وتعديل وإيقاف أكواد الخصم' }
     };
     document.getElementById('page-title').textContent    = titles[page].title;
     document.getElementById('page-subtitle').textContent = titles[page].sub;
@@ -563,6 +566,248 @@ function openConfirmModal(title, msg, callback) {
 function closeConfirmModal() {
     document.getElementById('confirm-modal').classList.remove('open');
     confirmCallback = null;
+}
+
+// ══════════════════════════════════════════════════════════════
+// DISCOUNT CODES
+// ══════════════════════════════════════════════════════════════
+async function loadDiscountCodes() {
+    const wrap = document.getElementById('discounts-table-wrap');
+    if (wrap) wrap.innerHTML = '<div class="loading-state"><div class="spinner"></div><p>جاري تحميل الأكواد...</p></div>';
+
+    const { data, error } = await sb
+        .from('discount_codes')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+    if (error) {
+        showToast('خطأ في تحميل أكواد الخصم', 'error');
+        if (wrap) wrap.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>خطأ في تحميل الأكواد</p></div>';
+        return;
+    }
+
+    allDiscounts = data || [];
+    updateDiscountStats();
+    renderDiscountsTable();
+}
+
+function updateDiscountStats() {
+    const now = new Date();
+    const active = allDiscounts.filter(d => d.is_active && (!d.expires_at || new Date(d.expires_at) > now));
+    const el = id => document.getElementById(id);
+    if (el('ds-total'))  el('ds-total').textContent  = allDiscounts.length;
+    if (el('ds-active')) el('ds-active').textContent = active.length;
+}
+
+function renderDiscountsTable() {
+    const wrap = document.getElementById('discounts-table-wrap');
+    if (!wrap) return;
+
+    if (!allDiscounts.length) {
+        wrap.innerHTML = '<div class="empty-state"><i class="fas fa-percent"></i><p>لا توجد أكواد خصم بعد — أضف أول كود!</p></div>';
+        return;
+    }
+
+    const now = new Date();
+    wrap.innerHTML = `
+    <table>
+        <thead>
+            <tr>
+                <th>الكود</th>
+                <th>النوع</th>
+                <th>القيمة</th>
+                <th>انتهاء الصلاحية</th>
+                <th>الحالة</th>
+                <th>إجراءات</th>
+            </tr>
+        </thead>
+        <tbody>
+            ${allDiscounts.map(d => {
+                const isExpired = d.expires_at && new Date(d.expires_at) < now;
+                let statusClass, statusText;
+                if (isExpired) {
+                    statusClass = 'expired'; statusText = 'منتهي الصلاحية';
+                } else if (d.is_active) {
+                    statusClass = 'active'; statusText = 'مفعّل';
+                } else {
+                    statusClass = 'inactive'; statusText = 'موقوف';
+                }
+
+                const typeLabel = d.discount_type === 'percent' ? 'نسبة %' : 'مبلغ ثابت';
+                const typeClass = d.discount_type === 'percent' ? 'percent' : 'fixed';
+                const valueLabel = d.discount_type === 'percent'
+                    ? `${d.value}%`
+                    : `${Number(d.value).toLocaleString()} ج.م`;
+
+                const usageText = d.usage_limit
+                    ? `${d.usage_count || 0} / ${d.usage_limit}`
+                    : `${d.usage_count || 0} / ∞`;
+                const usagePct = d.usage_limit ? Math.min(100, ((d.usage_count || 0) / d.usage_limit) * 100) : 0;
+
+                const expText = d.expires_at
+                    ? new Date(d.expires_at).toLocaleDateString('ar-EG', {year:'numeric',month:'short',day:'numeric'})
+                    : '<span style="color:var(--text-muted);font-size:12px">لا ينتهي</span>';
+
+                return `
+                <tr>
+                    <td data-label="الكود">
+                        <code style="background:var(--bg-cream);padding:4px 10px;border-radius:8px;font-size:13px;font-weight:800;letter-spacing:1.5px;color:var(--brown-dark)">${d.code}</code>
+                        ${d.description ? `<br><small style="color:var(--text-muted);font-size:11px">${d.description}</small>` : ''}
+                    </td>
+                    <td data-label="النوع"><span class="disc-type-pill ${typeClass}">${typeLabel}</span></td>
+                    <td data-label="القيمة"><strong style="color:var(--brown-dark);font-size:15px">${valueLabel}</strong></td>
+                    <td data-label="انتهاء الصلاحية">${expText}</td>
+                    <td data-label="الحالة"><span class="status-badge ${statusClass}">● ${statusText}</span></td>
+                    <td>
+                        <div class="td-actions">
+                            <label class="toggle-switch" title="${d.is_active ? 'إيقاف' : 'تفعيل'}">
+                                <input type="checkbox" ${d.is_active ? 'checked' : ''} onchange="toggleDiscountStatus('${d.id}', this.checked)">
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <button class="btn btn-outline btn-icon btn-sm" onclick="editDiscount('${d.id}')" title="تعديل">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-danger btn-icon btn-sm" onclick="deleteDiscount('${d.id}', '${d.code}')" title="حذف">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>`;
+            }).join('')}
+        </tbody>
+    </table>`;
+}
+
+function openDiscountModal(discount = null) {
+    document.getElementById('discount-modal-title').innerHTML =
+        `<i class="fas fa-percent" style="color:var(--brown-mid);margin-left:8px"></i> ${discount ? 'تعديل كود الخصم' : 'إضافة كود خصم'}`;
+
+    document.getElementById('discount-id').value    = discount?.id || '';
+    document.getElementById('d-code').value         = discount?.code || '';
+    document.getElementById('d-type').value         = discount?.discount_type || 'percent';
+    document.getElementById('d-value').value        = discount?.value || '';
+    document.getElementById('d-desc').value         = discount?.description || '';
+    document.getElementById('d-active').checked     = discount ? discount.is_active : true;
+
+    if (discount?.expires_at) {
+        const d = new Date(discount.expires_at);
+        const local = new Date(d.getTime() - d.getTimezoneOffset() * 60000);
+        document.getElementById('d-expires').value = local.toISOString().slice(0, 10);
+    } else {
+        document.getElementById('d-expires').value = '';
+    }
+
+    // قفل الأيام السابقة في النتيجة (Calendar)
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    document.getElementById('d-expires').min = `${yyyy}-${mm}-${dd}`;
+
+    updateDiscountSuffix();
+    document.getElementById('discount-modal').classList.add('open');
+}
+
+function closeDiscountModal() {
+    document.getElementById('discount-modal').classList.remove('open');
+}
+
+function updateDiscountSuffix() {
+    const type = document.getElementById('d-type').value;
+    const suffix = document.getElementById('d-suffix');
+    if (suffix) suffix.textContent = type === 'percent' ? '%' : 'ج.م';
+}
+
+function editDiscount(id) {
+    const disc = allDiscounts.find(d => d.id === id);
+    if (disc) openDiscountModal(disc);
+}
+
+async function saveDiscount() {
+    const id    = document.getElementById('discount-id').value;
+    const code  = document.getElementById('d-code').value.trim().toUpperCase();
+    const type  = document.getElementById('d-type').value;
+    const value = parseFloat(document.getElementById('d-value').value);
+    const exp   = document.getElementById('d-expires').value || null;
+    const desc  = document.getElementById('d-desc').value.trim() || null;
+    const active = document.getElementById('d-active').checked;
+
+    if (!code)           { showToast('أدخل كود الخصم', 'error'); return; }
+    if (!value || value <= 0) { showToast('أدخل قيمة صحيحة للخصم', 'error'); return; }
+    if (type === 'percent' && value > 100) { showToast('النسبة لا تتجاوز 100%', 'error'); return; }
+    let isoExp = null;
+    if (exp) {
+        // Safe parsing for "YYYY-MM-DD" to local Date at 23:59:59
+        const [y, m, d] = exp.split('-');
+        if (y && m && d) {
+            // Set expiry to the very end of the selected day
+            const expDate = new Date(y, m - 1, d, 23, 59, 59);
+            
+            if (expDate <= new Date()) {
+                showToast('❌ لا يمكن أن يكون تاريخ الانتهاء في الماضي', 'error');
+                return;
+            }
+            isoExp = expDate.toISOString();
+        }
+    }
+
+    const btn = document.getElementById('save-discount-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
+
+    const payload = {
+        code,
+        discount_type: type,
+        value,
+        expires_at: isoExp,
+        description: desc,
+        is_active: active
+    };
+
+    let error;
+    if (id) {
+        ({ error } = await sb.from('discount_codes').update(payload).eq('id', id));
+    } else {
+        payload.usage_count = 0;
+        ({ error } = await sb.from('discount_codes').insert([payload]));
+    }
+
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-save"></i> حفظ الكود';
+
+    if (error) {
+        if (error.code === '23505') showToast('هذا الكود موجود مسبقاً!', 'error');
+        else showToast('خطأ في حفظ الكود: ' + error.message, 'error');
+        return;
+    }
+
+    showToast(id ? 'تم تحديث الكود بنجاح ✅' : 'تم إضافة الكود بنجاح ✅', 'success');
+    closeDiscountModal();
+    await loadDiscountCodes();
+}
+
+async function toggleDiscountStatus(id, active) {
+    const { error } = await sb
+        .from('discount_codes')
+        .update({ is_active: active })
+        .eq('id', id);
+
+    if (error) { showToast('خطأ في تغيير الحالة', 'error'); return; }
+    showToast(active ? 'تم تفعيل الكود ✅' : 'تم إيقاف الكود', 'warn');
+    await loadDiscountCodes();
+}
+
+async function deleteDiscount(id, code) {
+    openConfirmModal(
+        'حذف كود الخصم',
+        `هل أنت متأكد من حذف كود "${code}"? لا يمكن التراجع.`,
+        async () => {
+            const { error } = await sb.from('discount_codes').delete().eq('id', id);
+            if (error) { showToast('خطأ في الحذف', 'error'); return; }
+            showToast('تم حذف الكود بنجاح', 'success');
+            await loadDiscountCodes();
+        }
+    );
 }
 
 // ══════════════════════════════════════════════════════════════

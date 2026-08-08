@@ -1,3 +1,7 @@
+// ── Supabase Config (read-only for discount codes) ──
+const _SB_URL  = 'https://hhqofygrjnbnnozrxxld.supabase.co';
+const _SB_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhocW9meWdyam5ibm5venJ4eGxkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM5NTA1MzgsImV4cCI6MjA5OTUyNjUzOH0.C0djcvWYWWAtV0rEy3PUO3oAFT38amhbSDeuwejIS3o';
+
 let cart = [];
 let wishlist = [];
 try {
@@ -196,13 +200,84 @@ function updateSummary() {
 }
 
 /* ---- DISCOUNT ---- */
-function applyDiscount() {
+async function applyDiscount() {
     if (!cart.length) { showToast('أضف منتجات أولاً!', 'warn'); return; }
-    const code = document.getElementById('discount-code').value.trim();
+    const codeInput = document.getElementById('discount-code').value.trim().toUpperCase();
     const msg = document.getElementById('discount-message');
-    if (code === 'Mo5%') { discount = 0.05; msg.style.color = '#25D366'; msg.textContent = '✅ تم تطبيق خصم 5٪!'; showToast('✅ خصم 5٪ مفعّل!', 'success'); }
-    else if (code === 'NATURE10') { discount = 0.10; msg.style.color = '#25D366'; msg.textContent = '✅ تم تطبيق خصم 10٪!'; showToast('✅ خصم 10٪ مفعّل!', 'success'); }
-    else { discount = 0; msg.style.color = 'var(--red)'; msg.textContent = '❌ كود غير صحيح أو منتهي'; showToast('❌ كود الخصم غير صحيح', 'error'); }
+
+    if (!codeInput) {
+        msg.style.color = 'var(--red)';
+        msg.textContent = '❌ أدخل كود الخصم';
+        return;
+    }
+
+    // Show loading
+    msg.style.color = 'var(--text-muted)';
+    msg.textContent = '⏳ جاري التحقق...';
+
+    try {
+        const resp = await fetch(
+            `${_SB_URL}/rest/v1/discount_codes?code=eq.${encodeURIComponent(codeInput)}&select=*&limit=1`,
+            { headers: { 'apikey': _SB_KEY, 'Authorization': `Bearer ${_SB_KEY}` } }
+        );
+        const rows = await resp.json();
+
+        if (!rows || rows.length === 0) {
+            discount = 0;
+            msg.style.color = 'var(--red)';
+            msg.textContent = '❌ كود غير صحيح أو غير موجود';
+            showToast('❌ كود الخصم غير صحيح', 'error');
+            updateSummary();
+            return;
+        }
+
+        const dc = rows[0];
+        const now = new Date();
+
+        // Check active
+        if (!dc.is_active) {
+            discount = 0;
+            msg.style.color = 'var(--red)';
+            msg.textContent = '❌ هذا الكود موقوف حالياً';
+            showToast('❌ كود الخصم موقوف', 'error');
+            updateSummary();
+            return;
+        }
+
+        // Check expiry
+        if (dc.expires_at) {
+            const expDate = new Date(dc.expires_at);
+            if (expDate < now) {
+                discount = 0;
+                msg.style.color = 'var(--red)';
+                msg.textContent = '❌ هذا الكود منتهي الصلاحية';
+                showToast('❌ كود منتهي الصلاحية', 'error');
+                updateSummary();
+                return;
+            }
+        }
+
+        // Apply discount
+        if (dc.discount_type === 'percent') {
+            discount = dc.value / 100;  // e.g. 10 => 0.10
+            msg.textContent = `✅ تم تطبيق خصم ${dc.value}٪!`;
+            showToast(`✅ خصم ${dc.value}٪ مفعّل!`, 'success');
+        } else {
+            // fixed amount: store as negative fraction relative to rawTotal
+            // we'll handle it differently in updateSummary
+            discount = dc.value / rawTotal;  // convert to fraction for compatibility
+            msg.textContent = `✅ تم تطبيق خصم ${Number(dc.value).toLocaleString()} ج.م!`;
+            showToast(`✅ خصم ${Number(dc.value).toLocaleString()} ج.م مفعّل!`, 'success');
+        }
+        msg.style.color = '#25D366';
+
+    } catch (e) {
+        discount = 0;
+        msg.style.color = 'var(--red)';
+        msg.textContent = '❌ خطأ في الاتصال بالخادم';
+        showToast('❌ خطأ في الاتصال، حاول مرة ثانية', 'error');
+    }
+
     updateSummary();
 }
 
@@ -236,7 +311,7 @@ function sendOrder() {
     const discAmt = rawTotal * discount;
     const after = rawTotal - discAmt;
     let ship = parseInt(gov.value);
-    if (after >= 1999) ship = 0;
+    if (rawTotal >= 1999) ship = 0;
     const govName = gov.options[gov.selectedIndex].text;
     const final = after + ship;
 

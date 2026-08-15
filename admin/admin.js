@@ -211,6 +211,10 @@ function renderProductsTable(products) {
                     <td data-label="Badge">${badge}</td>
                     <td>
                         <div class="td-actions">
+                            <label class="toggle-switch" title="${p.is_active !== false ? 'إخفاء من الموقع' : 'عرض في الموقع'}">
+                                <input type="checkbox" ${p.is_active !== false ? 'checked' : ''} onchange="toggleProductVisibility('${p.id}', this.checked)">
+                                <span class="toggle-slider"></span>
+                            </label>
                             <button class="btn btn-outline btn-icon btn-sm" onclick="editProduct('${p.id}')" title="تعديل">
                                 <i class="fas fa-edit"></i>
                             </button>
@@ -441,6 +445,17 @@ async function saveProduct() {
     await loadProducts();
 }
 
+// ── Toggle Product Visibility ───────────────────────────────────
+async function toggleProductVisibility(id, isActive) {
+    const { error } = await sb.from('products').update({ is_active: isActive }).eq('id', id);
+    if (error) { 
+        showToast('خطأ: ' + error.message, 'error'); 
+        return; 
+    }
+    showToast(isActive ? 'تم عرض المنتج في الموقع ✅' : 'تم إخفاء المنتج من الموقع', 'warn');
+    await loadProducts();
+}
+
 // ── Delete Product ─────────────────────────────────────────────
 function deleteProduct(id) {
     const p = allProducts.find(x => x.id == id);
@@ -639,10 +654,7 @@ function renderDiscountsTable() {
                     ? `${d.value}%`
                     : `${Number(d.value).toLocaleString()} ج.م`;
 
-                const usageText = d.usage_limit
-                    ? `${d.usage_count || 0} / ${d.usage_limit}`
-                    : `${d.usage_count || 0} / ∞`;
-                const usagePct = d.usage_limit ? Math.min(100, ((d.usage_count || 0) / d.usage_limit) * 100) : 0;
+
 
                 const expText = d.expires_at
                     ? new Date(d.expires_at).toLocaleDateString('ar-EG', {year:'numeric',month:'short',day:'numeric'})
@@ -768,7 +780,6 @@ async function saveDiscount() {
     if (id) {
         ({ error } = await sb.from('discount_codes').update(payload).eq('id', id));
     } else {
-        payload.usage_count = 0;
         ({ error } = await sb.from('discount_codes').insert([payload]));
     }
 

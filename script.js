@@ -18,7 +18,8 @@ try {
     wishlist = [];
 }
 let rawTotal = 0;
-let discount = 0;
+let discountType = null;
+let discountValue = 0;
 
 // Recalculate rawTotal from loaded cart
 if (cart.length > 0) {
@@ -130,7 +131,7 @@ function setQty(idx, val) {
 function removeItem(idx) {
     rawTotal -= cart[idx].price * cart[idx].qty;
     cart.splice(idx, 1);
-    if (!cart.length) { discount = 0; document.getElementById('discount-message').innerText = ''; }
+    if (!cart.length) { discountType = null; discountValue = 0; document.getElementById('discount-message').innerText = ''; }
     saveCart();
     refreshCounters();
     renderCart();
@@ -176,7 +177,10 @@ function renderCart() {
 
 /* ---- SUMMARY ---- */
 function updateSummary() {
-    const discAmt = rawTotal * discount;
+    let discAmt = 0;
+    if (discountType === 'percent') discAmt = rawTotal * discountValue;
+    else if (discountType === 'fixed') discAmt = Math.min(discountValue, rawTotal);
+    
     const afterDisc = rawTotal - discAmt;
     const gov = document.getElementById('governorate');
     let ship = gov && gov.value ? parseInt(gov.value) : 0;
@@ -185,7 +189,7 @@ function updateSummary() {
     document.getElementById('sum-subtotal').textContent = rawTotal.toLocaleString() + ' ج.م';
 
     const dr = document.getElementById('sum-disc-row');
-    if (discount > 0) {
+    if (discAmt > 0) {
         dr.style.display = 'flex';
         document.getElementById('sum-disc').textContent = '-' + Math.round(discAmt).toLocaleString() + ' ج.م';
     } else { dr.style.display = 'none'; }
@@ -223,7 +227,7 @@ async function applyDiscount() {
         const rows = await resp.json();
 
         if (!rows || rows.length === 0) {
-            discount = 0;
+            discountType = null; discountValue = 0;
             msg.style.color = 'var(--red)';
             msg.textContent = '❌ كود غير صحيح أو غير موجود';
             showToast('❌ كود الخصم غير صحيح', 'error');
@@ -236,7 +240,7 @@ async function applyDiscount() {
 
         // Check active
         if (!dc.is_active) {
-            discount = 0;
+            discountType = null; discountValue = 0;
             msg.style.color = 'var(--red)';
             msg.textContent = '❌ هذا الكود موقوف حالياً';
             showToast('❌ كود الخصم موقوف', 'error');
@@ -248,7 +252,7 @@ async function applyDiscount() {
         if (dc.expires_at) {
             const expDate = new Date(dc.expires_at);
             if (expDate < now) {
-                discount = 0;
+                discountType = null; discountValue = 0;
                 msg.style.color = 'var(--red)';
                 msg.textContent = '❌ هذا الكود منتهي الصلاحية';
                 showToast('❌ كود منتهي الصلاحية', 'error');
@@ -259,20 +263,20 @@ async function applyDiscount() {
 
         // Apply discount
         if (dc.discount_type === 'percent') {
-            discount = dc.value / 100;  // e.g. 10 => 0.10
+            discountType = 'percent';
+            discountValue = dc.value / 100;  // e.g. 10 => 0.10
             msg.textContent = `✅ تم تطبيق خصم ${dc.value}٪!`;
             showToast(`✅ خصم ${dc.value}٪ مفعّل!`, 'success');
         } else {
-            // fixed amount: store as negative fraction relative to rawTotal
-            // we'll handle it differently in updateSummary
-            discount = dc.value / rawTotal;  // convert to fraction for compatibility
+            discountType = 'fixed';
+            discountValue = dc.value;
             msg.textContent = `✅ تم تطبيق خصم ${Number(dc.value).toLocaleString()} ج.م!`;
             showToast(`✅ خصم ${Number(dc.value).toLocaleString()} ج.م مفعّل!`, 'success');
         }
         msg.style.color = '#25D366';
 
     } catch (e) {
-        discount = 0;
+        discountType = null; discountValue = 0;
         msg.style.color = 'var(--red)';
         msg.textContent = '❌ خطأ في الاتصال بالخادم';
         showToast('❌ خطأ في الاتصال، حاول مرة ثانية', 'error');
@@ -308,7 +312,10 @@ function sendOrder() {
         return;
     }
 
-    const discAmt = rawTotal * discount;
+    let discAmt = 0;
+    if (discountType === 'percent') discAmt = rawTotal * discountValue;
+    else if (discountType === 'fixed') discAmt = Math.min(discountValue, rawTotal);
+
     const after = rawTotal - discAmt;
     let ship = parseInt(gov.value);
     if (rawTotal >= 1999) ship = 0;
@@ -318,7 +325,7 @@ function sendOrder() {
     let msg = `*🍯 طلب جديد - متجر محرم*\n━━━━━━━━━━━━━━━━\n*المنتجات:*\n`;
     cart.forEach(i => { msg += `• ${i.name} × ${i.qty} = ${(i.price * i.qty).toLocaleString()} ج.م\n`; });
     msg += `━━━━━━━━━━━━━━━━\n*الفاتورة:*\nإجمالي المنتجات: ${rawTotal.toLocaleString()} ج.م\n`;
-    if (discount > 0) msg += `خصم الكوبون: -${Math.round(discAmt).toLocaleString()} ج.م\n`;
+    if (discAmt > 0) msg += `خصم الكوبون: -${Math.round(discAmt).toLocaleString()} ج.م\n`;
     msg += `الشحن (${govName}): ${ship === 0 ? 'مجاناً 🎉' : ship + ' ج.م'}\n*الإجمالي النهائي: ${final.toLocaleString()} ج.م*\n`;
     msg += `━━━━━━━━━━━━━━━━\n*طريقة الدفع:* ${pay}\n━━━━━━━━━━━━━━━━\n*بيانات التوصيل:*\nالاسم: ${name}\nالمحافظة: ${govName}\nالعنوان: ${addr}\nالهاتف: ${phone}`;
 
@@ -653,11 +660,13 @@ let sbClient = null;  // global client علشان الـ Realtime يفضل شغ�
 async function loadStoreData() {
     try {
         if (typeof supabase === 'undefined') {
-            document.getElementById('products-dynamic-wrapper').innerHTML = '<div class="alert alert-danger">Supabase not loaded</div>';
+            const w = document.getElementById('products-dynamic-wrapper');
+            if (w) w.innerHTML = '<div class="alert alert-danger">Supabase not loaded</div>';
             return;
         }
         if (typeof SUPABASE_URL === 'undefined') {
-            document.getElementById('products-dynamic-wrapper').innerHTML = '<div class="alert alert-danger">SUPABASE_URL not defined</div>';
+            const w = document.getElementById('products-dynamic-wrapper');
+            if (w) w.innerHTML = '<div class="alert alert-danger">SUPABASE_URL not defined</div>';
             return;
         }
 
@@ -747,8 +756,8 @@ function syncPricesWithDB() {
 
     if (wishlistChanged) {
         localStorage.setItem('moharram_wishlist', JSON.stringify(wishlist));
-        if (document.getElementById('wishlist-page-container')) {
-            renderWishlistPage();
+        if (typeof renderWishlistPageFull === 'function' && document.getElementById('wishlist-grid')) {
+            renderWishlistPageFull();
         }
     }
 }
@@ -757,7 +766,8 @@ function renderDynamicProducts() {
     const wrapper = document.getElementById('products-dynamic-wrapper');
     if (!wrapper) return;
 
-    if (!allProducts.length) {
+    const activeProducts = allProducts.filter(function(p) { return p.is_active !== false; });
+    if (!activeProducts.length) {
         wrapper.innerHTML = '<div class="text-center py-5"><p>لا توجد منتجات متاحة حالياً.</p></div>';
         return;
     }
@@ -779,7 +789,7 @@ function renderDynamicProducts() {
     tabsRow.appendChild(allBtn);
 
     allCategories.forEach(function(cat) {
-        const catProds = allProducts.filter(function(p) { return p.category_id === cat.id; });
+        const catProds = allProducts.filter(function(p) { return p.category_id === cat.id && p.is_active !== false; });
         if (!catProds.length) return;
         const btn = document.createElement('button');
         btn.className = 'filter-tab';
@@ -793,7 +803,7 @@ function renderDynamicProducts() {
 
     // === CATEGORY SECTIONS ===
     allCategories.forEach(function(cat) {
-        const catProds = allProducts.filter(function(p) { return p.category_id === cat.id; });
+        const catProds = allProducts.filter(function(p) { return p.category_id === cat.id && p.is_active !== false; });
         if (!catProds.length) return;
 
         const header = document.createElement('div');
@@ -924,6 +934,95 @@ function buildProductCard(p, dataCat, index) {
     card.appendChild(body);
 
     return col;
+}
+
+/* ---- SEARCH FUNCTIONALITY ---- */
+let searchModalInstance = null;
+
+function openSearchModal() {
+    const modalEl = document.getElementById('searchModal');
+    if (!modalEl) return;
+    if (!searchModalInstance) {
+        searchModalInstance = new bootstrap.Modal(modalEl);
+    }
+    const input = document.getElementById('searchInput');
+    input.value = '';
+    document.getElementById('searchResults').innerHTML = '<div class="text-center text-muted py-4">اكتب اسم المنتج للبحث</div>';
+    searchModalInstance.show();
+    setTimeout(() => input.focus(), 500);
+}
+
+function toggleWishDirect(btn, id, name, price, img, cat) {
+    let index = wishlist.findIndex(i => (id && i.id == id) || (!id && i && (i.title === name || i.name === name)));
+    if (index > -1) {
+        wishlist.splice(index, 1);
+        btn.innerHTML = '<i class="far fa-heart me-1"></i> مفضلة';
+        btn.classList.replace('btn-danger', 'btn-outline-danger');
+        showToast('تم الحذف من المفضلة', 'error');
+    } else {
+        wishlist.push({ id, title: name, name, cartName: name, price, img, cat });
+        btn.innerHTML = '<i class="fas fa-heart me-1"></i> مفضلة';
+        btn.classList.replace('btn-outline-danger', 'btn-danger');
+        showToast('تم إضافة المنتج للمفضلة', 'info');
+    }
+    localStorage.setItem('moharram_wishlist', JSON.stringify(wishlist));
+    if (typeof updateWishlistCount === 'function') updateWishlistCount();
+    
+    // update state in page if needed
+    if (typeof renderDynamicProducts === 'function' && document.getElementById('products-dynamic-wrapper')) {
+        renderDynamicProducts();
+    }
+    if (typeof renderWishlistPageFull === 'function' && document.getElementById('wishlist-grid')) {
+        renderWishlistPageFull();
+    }
+}
+
+function performSearch() {
+    const q = document.getElementById('searchInput').value.trim().toLowerCase();
+    const resultsContainer = document.getElementById('searchResults');
+    
+    if (!q) {
+        resultsContainer.innerHTML = '<div class="text-center text-muted py-4">اكتب اسم المنتج للبحث</div>';
+        return;
+    }
+    
+    const activeProducts = allProducts.filter(p => p.is_active !== false);
+    const matches = activeProducts.filter(p => p.name.toLowerCase().includes(q) || (p.description && p.description.toLowerCase().includes(q)));
+    
+    if (!matches.length) {
+        resultsContainer.innerHTML = '<div class="text-center text-muted py-4">لم يتم العثور على منتجات مطابقة</div>';
+        return;
+    }
+    
+    resultsContainer.innerHTML = matches.map(p => {
+        const catName = p.categories ? p.categories.name : '';
+        const img = p.image_url ? `<img src="${p.image_url}" class="rounded object-fit-cover shadow-sm border" style="width: 80px; height: 80px;" alt="${p.name}">` : `<div class="rounded bg-light d-flex align-items-center justify-content-center shadow-sm border" style="width:80px; height:80px; font-size:24px;">🍯</div>`;
+        const cartName = p.name.replace(/'/g, "\\'");
+        return `
+            <div class="col-12">
+                <div class="d-flex align-items-center bg-white p-3 rounded-4 shadow-sm border search-result-card">
+                    ${img}
+                    <div class="flex-grow-1 mx-3">
+                        <h6 class="mb-1 fw-bold text-brown-dark" style="font-size: 15px;">${p.name}</h6>
+                        <div class="text-brown-mid fw-bold mb-1">${Number(p.price).toLocaleString()} ج.م</div>
+                    </div>
+                    <div class="d-flex flex-column gap-2">
+                        <button class="btn btn-sm btn-primary rounded-pill px-3 fw-bold shadow-sm" onclick="addToCart('${p.id}', '${cartName}', ${p.price}); searchModalInstance.hide(); openCart();">
+                            <i class="fas fa-cart-plus me-1"></i> سلة
+                        </button>
+                        ${(() => {
+                            const isWished = wishlist.some(i => i.id == p.id || i.name == p.name);
+                            const wishBtnClass = isWished ? 'btn-danger' : 'btn-outline-danger';
+                            const wishIcon = isWished ? 'fas' : 'far';
+                            return `<button class="btn btn-sm ${wishBtnClass} rounded-pill px-3 fw-bold" onclick="toggleWishDirect(this, '${p.id}', '${cartName}', ${p.price}, '${p.image_url || ''}', '${catName}')">
+                                <i class="${wishIcon} fa-heart me-1"></i> مفضلة
+                            </button>`;
+                        })()}
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
 }
 
 window.addEventListener('load', function() {

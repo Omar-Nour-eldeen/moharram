@@ -720,9 +720,13 @@ async function loadStoreData() {
 
 function syncPricesWithDB() {
     let cartChanged = false;
-    cart.forEach(item => {
+    for (let i = cart.length - 1; i >= 0; i--) {
+        const item = cart[i];
         const dbProduct = allProducts.find(p => p.id == item.id || (!item.id && p.name === item.name));
-        if (dbProduct) {
+        if (!dbProduct || dbProduct.is_active === false) {
+            cart.splice(i, 1);
+            cartChanged = true;
+        } else {
             if (!item.id || item.name !== dbProduct.name || item.price !== dbProduct.price) {
                 item.id = dbProduct.id;
                 item.name = dbProduct.name;
@@ -730,18 +734,25 @@ function syncPricesWithDB() {
                 cartChanged = true;
             }
         }
-    });
+    }
 
     if (cartChanged) {
+        if (!cart.length) { discountType = null; discountValue = 0; const msg = document.getElementById('discount-message'); if (msg) msg.innerText = ''; }
         rawTotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
         saveCart();
+        if (typeof refreshCounters === 'function') refreshCounters();
         renderCart();
+        if (typeof updateSummary === 'function') updateSummary();
     }
 
     let wishlistChanged = false;
-    wishlist.forEach(item => {
+    for (let i = wishlist.length - 1; i >= 0; i--) {
+        const item = wishlist[i];
         const dbProduct = allProducts.find(p => p.id == item.id || (!item.id && (p.name === item.title || p.name === item.name)));
-        if (dbProduct) {
+        if (!dbProduct || dbProduct.is_active === false) {
+            wishlist.splice(i, 1);
+            wishlistChanged = true;
+        } else {
             if (!item.id || item.title !== dbProduct.name || item.price !== dbProduct.price || item.img !== dbProduct.image_url || item.cat !== (dbProduct.categories && dbProduct.categories.name)) {
                 item.id = dbProduct.id;
                 item.title = dbProduct.name;
@@ -752,10 +763,11 @@ function syncPricesWithDB() {
                 wishlistChanged = true;
             }
         }
-    });
+    }
 
     if (wishlistChanged) {
         localStorage.setItem('moharram_wishlist', JSON.stringify(wishlist));
+        if (typeof updateWishlistCount === 'function') updateWishlistCount();
         if (typeof renderWishlistPageFull === 'function' && document.getElementById('wishlist-grid')) {
             renderWishlistPageFull();
         }

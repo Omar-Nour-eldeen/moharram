@@ -993,24 +993,55 @@ footer {
     .navbar .container-fluid {
         flex-wrap: wrap;
         gap: 0;
+        min-height: 6rem;
+        position: relative;
     }
 
     .navbar-brand {
-        order: 2;
-        flex: 1;
-        justify-content: center;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1;
         display: flex !important;
+        justify-content: center;
     }
 
     .navbar-toggler {
-        order: 1;
-        margin: 0;
+        position: absolute;
+        right: 8px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 2;
+        margin: 0 !important;
     }
 
     .header-actions {
-        order: 3;
-        margin-top: 0 !important;
-        margin-right: auto;
+        display: contents !important;
+    }
+
+    .header-actions .header-icon-btn:first-child {
+        position: absolute;
+        right: 62px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 2;
+    }
+
+    .header-actions .header-icon-btn:nth-child(2) {
+        position: absolute;
+        left: 62px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 2;
+    }
+
+    .header-actions .header-icon-btn:nth-child(3) {
+        position: absolute;
+        left: 8px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 2;
     }
 
     .navbar-collapse {

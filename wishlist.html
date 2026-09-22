@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,54 +23,60 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
 
     <div id="sticky-header">
-    <!-- PROMO TICKER -->
-    <canvas id="tickerCanvas" style="width:100%;display:block;"></canvas>
+        <!-- PROMO TICKER -->
+        <canvas id="tickerCanvas" style="width:100%;display:block;"></canvas>
 
-    <!-- NAVBAR -->
-    <nav class="navbar navbar-expand-lg py-2 px-4 sticky-top border-bottom"
-        style="background: rgba(255,255,255,0.97); backdrop-filter: blur(14px); box-shadow: 0 2px 18px var(--shadow);">
-        <div class="container-fluid">
-            <a class="navbar-brand brand-logo m-0" href="index.html">
-                <img class="rounded-circle" src="images/logo.png" alt="شعار محرم" style="width: 8vh; height: 8vh;">
-                <div class="brand-name d-none d-sm-block">
-                    متجر محرم
-                    <span>منتجات طبيعية أصيلة</span>
-                </div>
-            </a>
-
-            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse"
-                data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse justify-content-center" id="mainNav">
-                <ul class="navbar-nav fw-bold gap-lg-3 mt-3 mt-lg-0 text-center">
-                    <li class="nav-item"><a class="nav-link text-brown-dark" href="index.html">الرئيسية</a></li>
-                    <li class="nav-item"><a class="nav-link text-brown-dark" href="index.html#products-dynamic-wrapper">المنتجات</a></li>
-                    <li class="nav-item"><a class="nav-link active text-brown-dark" href="wishlist.html">المفضلة</a></li>
-                    <li class="nav-item"><a class="nav-link text-brown-dark" href="index.html#social">تواصل معنا</a></li>
-                </ul>
-            </div>
-
-            <div class="header-actions d-flex gap-2 align-items-center mt-3 mt-lg-0 justify-content-center">
-                <button class="header-icon-btn border-0 bg-transparent text-decoration-none" onclick="openSearchModal()" title="بحث" style="cursor: pointer;">
-                    <i class="fas fa-search"></i>
-                </button>
-                <a href="wishlist.html" class="header-icon-btn text-decoration-none" title="المفضلة" style="position:relative;">
-                    <i class="fas fa-heart" style="color: var(--red);"></i>
-                    <span id="wishlist-counter"
-                        style="position:absolute;top:-4px;left:-4px;background:var(--red);color:white;border-radius:50%;width:18px;height:18px;font-size:10px;font-weight:900;display:none;align-items:center;justify-content:center;">0</span>
+        <!-- NAVBAR -->
+        <nav class="navbar navbar-expand-lg py-2 px-2 px-lg-4 border-bottom"
+            style="background: rgba(255,255,255,0.97); backdrop-filter: blur(14px); box-shadow: 0 2px 18px var(--shadow);">
+            <div class="container-fluid">
+                <a class="navbar-brand brand-logo m-0" href="index.html">
+                    <img class="rounded-circle" src="images/logo.png" alt="شعار محرم" style="width: 8vh; height: 8vh;">
+                    <div class="brand-name d-none d-sm-block">
+                        متجر محرم
+                        <span>منتجات طبيعية أصيلة</span>
+                    </div>
                 </a>
-                <button class="header-icon-btn" onclick="openCart()" title="السلة" style="position:relative;">
-                    <i class="fas fa-shopping-basket"></i>
-                    <span id="cart-counter" style="display:none;align-items:center;justify-content:center;">0</span>
+
+                <button class="navbar-toggler border-0 shadow-none" type="button" onclick="toggleMainNav()"
+                    aria-controls="mainNav" aria-expanded="false" aria-label="فتح القائمة">
+                    <span class="navbar-toggler-icon"></span>
                 </button>
+
+                <div class="collapse navbar-collapse justify-content-center" id="mainNav">
+                    <ul class="navbar-nav fw-bold gap-lg-3 mt-3 mt-lg-0 text-center">
+                        <li class="nav-item"><a class="nav-link text-brown-dark" href="index.html">الرئيسية</a></li>
+                        <li class="nav-item"><a class="nav-link text-brown-dark"
+                                href="index.html#products-dynamic-wrapper">المنتجات</a></li>
+                        <li class="nav-item"><a class="nav-link active text-brown-dark" href="wishlist.html">المفضلة</a>
+                        </li>
+                        <li class="nav-item"><a class="nav-link text-brown-dark" href="index.html#social">تواصل معنا</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="header-actions d-flex gap-2 align-items-center mt-3 mt-lg-0 justify-content-center">
+                    <button class="header-icon-btn border-0 bg-transparent text-decoration-none"
+                        onclick="openSearchModal()" title="بحث" style="cursor: pointer;">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <a href="wishlist.html" class="header-icon-btn text-decoration-none" title="المفضلة">
+                        <i class="far fa-heart"></i>
+                        <span id="wishlist-counter"
+                            style="position:absolute;top:-4px;left:-4px;background:var(--red);color:white;border-radius:50%;width:18px;height:18px;font-size:10px;font-weight:900;display:none;align-items:center;justify-content:center;">0</span>
+                    </a>
+                    <button class="header-icon-btn" onclick="openCart()" title="السلة">
+                        <i class="fas fa-shopping-basket"></i>
+                        <span id="cart-counter" style="display:none;align-items:center;justify-content:center;">0</span>
+                    </button>
+                </div>
             </div>
-        </div>
-    </nav>
+        </nav>
+        <div class="mobile-nav-overlay" id="mobileNavOverlay" onclick="closeMainNav()"></div>
     </div><!-- /#sticky-header -->
 
     <!-- WISHLIST HERO (SAME STYLE AS MAIN HERO) -->
@@ -129,8 +136,10 @@
         <div id="wishlist-empty" class="text-center py-5" style="display:none;" data-aos="fade-up">
             <div style="font-size: 80px; margin-bottom: 20px; opacity: 0.3;">🤍</div>
             <h3 class="fw-bold mb-3" style="color: var(--brown-dark);">المفضلة فارغة</h3>
-            <p class="text-muted mb-4" style="font-size: 14px;">لم تقم بإضافة أي منتجات إلى المفضلة بعد.<br>تصفح منتجاتنا وأضف ما يعجبك!</p>
-            <a href="index.html#products-dynamic-wrapper" class="btn-primary text-decoration-none" style="display:inline-flex; align-items:center; gap:8px;">
+            <p class="text-muted mb-4" style="font-size: 14px;">لم تقم بإضافة أي منتجات إلى المفضلة بعد.<br>تصفح
+                منتجاتنا وأضف ما يعجبك!</p>
+            <a href="index.html#products-dynamic-wrapper" class="btn-primary text-decoration-none"
+                style="display:inline-flex; align-items:center; gap:8px;">
                 <i class="fas fa-store"></i> تصفح المنتجات
             </a>
         </div>
@@ -140,7 +149,8 @@
 
         <!-- Add all to cart button (shown when wishlist has items) -->
         <div id="wishlist-actions" class="text-center mt-5" style="display:none;" data-aos="fade-up">
-            <button class="add-to-cart-btn px-5 py-3" style="font-size:15px; border-radius:50px; display:inline-flex; gap:10px;" onclick="addAllToCart()">
+            <button class="add-to-cart-btn px-5 py-3"
+                style="font-size:15px; border-radius:50px; display:inline-flex; gap:10px;" onclick="addAllToCart()">
                 <i class="fas fa-cart-plus"></i> إضافة الكل للسلة
             </button>
         </div>
@@ -157,16 +167,20 @@
                 <a href="https://wa.me/201067986822" target="_blank" rel="noopener" class="social-float-btn sfb-wa">
                     <i class="fab fa-whatsapp"></i>
                 </a>
-                <a href="https://www.instagram.com/moharram_0?igsh=MW5lcDI4M2QwaGN0dQ==" target="_blank" rel="noopener" class="social-float-btn sfb-ig">
+                <a href="https://www.instagram.com/moharram_0?igsh=MW5lcDI4M2QwaGN0dQ==" target="_blank" rel="noopener"
+                    class="social-float-btn sfb-ig">
                     <i class="fab fa-instagram"></i>
                 </a>
-                <a href="https://www.facebook.com/share/1JJwNnuZjP/" target="_blank" rel="noopener" class="social-float-btn sfb-fb">
+                <a href="https://www.facebook.com/share/1JJwNnuZjP/" target="_blank" rel="noopener"
+                    class="social-float-btn sfb-fb">
                     <i class="fab fa-facebook"></i>
                 </a>
-                <a href="https://youtube.com/@ebrahimmoharram9500?si=176t-Mvjx9IpLmsy" target="_blank" rel="noopener" class="social-float-btn sfb-yt">
+                <a href="https://youtube.com/@ebrahimmoharram9500?si=176t-Mvjx9IpLmsy" target="_blank" rel="noopener"
+                    class="social-float-btn sfb-yt">
                     <i class="fab fa-youtube"></i>
                 </a>
-                <a href="https://www.tiktok.com/@moharram022?_r=1&_t=ZS-96IgbrUUruX" target="_blank" rel="noopener" class="social-float-btn sfb-tk">
+                <a href="https://www.tiktok.com/@moharram022?_r=1&_t=ZS-96IgbrUUruX" target="_blank" rel="noopener"
+                    class="social-float-btn sfb-tk">
                     <i class="fab fa-tiktok"></i>
                 </a>
             </div>
@@ -196,7 +210,8 @@
                 </div>
                 <div class="col-12 col-md-6 col-lg-3 footer-col">
                     <h4>تابعنا</h4>
-                    <a href="https://www.instagram.com/moharram_0?igsh=MW5lcDI4M2QwaGN0dQ==" target="_blank">إنستاجرام</a>
+                    <a href="https://www.instagram.com/moharram_0?igsh=MW5lcDI4M2QwaGN0dQ=="
+                        target="_blank">إنستاجرام</a>
                     <a href="https://www.facebook.com/share/1JJwNnuZjP/" target="_blank">فيسبوك</a>
                     <a href="https://youtube.com/@ebrahimmoharram9500?si=176t-Mvjx9IpLmsy" target="_blank">يوتيوب</a>
                     <a href="https://www.tiktok.com/@moharram022?_r=1&_t=ZS-96IgbrUUruX" target="_blank">تيك توك</a>
@@ -220,16 +235,20 @@
     <!-- SOCIAL FLOAT -->
     <div class="social-float">
         <div class="social-links" id="social-links">
-            <a href="https://www.tiktok.com/@moharram022?_r=1&_t=ZS-96IgbrUUruX" target="_blank" rel="noopener" class="social-float-btn sfb-tk">
+            <a href="https://www.tiktok.com/@moharram022?_r=1&_t=ZS-96IgbrUUruX" target="_blank" rel="noopener"
+                class="social-float-btn sfb-tk">
                 <i class="fab fa-tiktok"></i><span class="tooltip">تيك توك</span>
             </a>
-            <a href="https://youtube.com/@ebrahimmoharram9500?si=176t-Mvjx9IpLmsy" target="_blank" rel="noopener" class="social-float-btn sfb-yt">
+            <a href="https://youtube.com/@ebrahimmoharram9500?si=176t-Mvjx9IpLmsy" target="_blank" rel="noopener"
+                class="social-float-btn sfb-yt">
                 <i class="fab fa-youtube"></i><span class="tooltip">يوتيوب</span>
             </a>
-            <a href="https://www.facebook.com/share/1JJwNnuZjP/" target="_blank" rel="noopener" class="social-float-btn sfb-fb">
+            <a href="https://www.facebook.com/share/1JJwNnuZjP/" target="_blank" rel="noopener"
+                class="social-float-btn sfb-fb">
                 <i class="fab fa-facebook"></i><span class="tooltip">فيسبوك</span>
             </a>
-            <a href="https://www.instagram.com/moharram_0?igsh=MW5lcDI4M2QwaGN0dQ==" target="_blank" rel="noopener" class="social-float-btn sfb-ig">
+            <a href="https://www.instagram.com/moharram_0?igsh=MW5lcDI4M2QwaGN0dQ==" target="_blank" rel="noopener"
+                class="social-float-btn sfb-ig">
                 <i class="fab fa-instagram"></i><span class="tooltip">إنستاجرام</span>
             </a>
             <a href="https://wa.me/201067986822" target="_blank" rel="noopener" class="social-float-btn sfb-wa">
@@ -245,8 +264,10 @@
     <div class="offcanvas offcanvas-end" tabindex="-1" id="cartOffcanvas" aria-labelledby="cartOffcanvasLabel"
         style="width: 470px; max-width: 100%;">
         <div class="offcanvas-header bg-brown-dark text-brown-mid">
-            <h5 class="offcanvas-title fw-bold" id="cartOffcanvasLabel"><i class="fas fa-shopping-basket me-2"></i> سلة المشتريات</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            <h5 class="offcanvas-title fw-bold" id="cartOffcanvasLabel"><i class="fas fa-shopping-basket me-2"></i> سلة
+                المشتريات</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+                aria-label="Close"></button>
         </div>
         <div class="offcanvas-body bg-white p-4">
             <div id="cart-items-container">
@@ -263,7 +284,8 @@
             <div id="discount-message" class="mb-3"></div>
             <div class="cart-summary mb-3" id="cart-summary" style="display:none">
                 <div class="summary-row"><span>إجمالي المنتجات</span><span id="sum-subtotal">0 ج.م</span></div>
-                <div class="summary-row" id="sum-disc-row" style="display:none;color:var(--red)"><span>خصم الكوبون</span><span id="sum-disc">0 ج.م</span></div>
+                <div class="summary-row" id="sum-disc-row" style="display:none;color:var(--red)"><span>خصم
+                        الكوبون</span><span id="sum-disc">0 ج.م</span></div>
                 <div class="summary-row"><span>مصاريف الشحن</span><span id="sum-ship">يُحدد بالمحافظة</span></div>
                 <div class="summary-row total"><span>الإجمالي النهائي</span><span id="sum-total">0 ج.م</span></div>
             </div>
@@ -324,7 +346,8 @@
                 </div>
                 <div class="form-field mb-2">
                     <label class="form-label">العنوان التفصيلي *</label>
-                    <input type="text" id="customer-address" class="form-input" placeholder="المنطقة، الشارع، رقم العمارة، الطابق">
+                    <input type="text" id="customer-address" class="form-input"
+                        placeholder="المنطقة، الشارع، رقم العمارة، الطابق">
                 </div>
                 <div class="form-field mb-3">
                     <label class="form-label">رقم الهاتف *</label>
@@ -343,12 +366,16 @@
         <div class="modal-dialog modal-dialog-scrollable modal-lg" style="margin-top: 10vh;">
             <div class="modal-content border-0 shadow-lg" style="border-radius: 16px;">
                 <div class="modal-header border-0 pb-2">
-                    <h5 class="modal-title fw-bold text-brown-dark" id="searchModalLabel"><i class="fas fa-search text-brown-mid ms-2"></i> بحث عن منتج</h5>
-                    <button type="button" class="btn-close m-0 ms-auto" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+                    <h5 class="modal-title fw-bold text-brown-dark" id="searchModalLabel"><i
+                            class="fas fa-search text-brown-mid ms-2"></i> بحث عن منتج</h5>
+                    <button type="button" class="btn-close m-0 ms-auto" data-bs-dismiss="modal"
+                        aria-label="إغلاق"></button>
                 </div>
                 <div class="modal-body pt-0">
                     <div class="position-relative mb-4">
-                        <input type="text" id="searchInput" class="form-control form-control-lg bg-light border-0 px-4" style="border-radius: 12px; font-weight: 600;" placeholder="اكتب اسم المنتج للبحث..." onkeyup="performSearch()">
+                        <input type="text" id="searchInput" class="form-control form-control-lg bg-light border-0 px-4"
+                            style="border-radius: 12px; font-weight: 600;" placeholder="اكتب اسم المنتج للبحث..."
+                            onkeyup="performSearch()">
                     </div>
                     <div id="searchResults" class="row g-3">
                         <div class="text-center text-muted py-4">اكتب اسم المنتج للبحث</div>
@@ -371,38 +398,38 @@
     <script src="script.js"></script>
 
     <script>
-    // =============================================
-    //  WISHLIST PAGE — reads directly from localStorage
-    //  Runs AFTER script.js so shared functions are available
-    // =============================================
+        // =============================================
+        //  WISHLIST PAGE — reads directly from localStorage
+        //  Runs AFTER script.js so shared functions are available
+        // =============================================
 
-    function renderWishlistPageFull() {
-        // Always re-read fresh from localStorage
-        let wl = [];
-        try {
-            wl = JSON.parse(localStorage.getItem('moharram_wishlist')) || [];
-            if (!Array.isArray(wl)) wl = [];
-            wl = wl.filter(i => i && (i.title || i.name));
-        } catch(e) { wl = []; }
+        function renderWishlistPageFull() {
+            // Always re-read fresh from localStorage
+            let wl = [];
+            try {
+                wl = JSON.parse(localStorage.getItem('moharram_wishlist')) || [];
+                if (!Array.isArray(wl)) wl = [];
+                wl = wl.filter(i => i && (i.title || i.name));
+            } catch (e) { wl = []; }
 
-        const grid    = document.getElementById('wishlist-grid');
-        const empty   = document.getElementById('wishlist-empty');
-        const actions = document.getElementById('wishlist-actions');
-        const label   = document.getElementById('wishlist-count-label');
+            const grid = document.getElementById('wishlist-grid');
+            const empty = document.getElementById('wishlist-empty');
+            const actions = document.getElementById('wishlist-actions');
+            const label = document.getElementById('wishlist-count-label');
 
-        if (!wl.length) {
-            grid.innerHTML    = '';
-            empty.style.display   = 'block';
-            actions.style.display = 'none';
-            label.textContent     = '';
-            return;
-        }
+            if (!wl.length) {
+                grid.innerHTML = '';
+                empty.style.display = 'block';
+                actions.style.display = 'none';
+                label.textContent = '';
+                return;
+            }
 
-        empty.style.display   = 'none';
-        actions.style.display = 'block';
-        label.textContent     = wl.length + ' منتج';
+            empty.style.display = 'none';
+            actions.style.display = 'block';
+            label.textContent = wl.length + ' منتج';
 
-        grid.innerHTML = wl.map((it, i) => `
+            grid.innerHTML = wl.map((it, i) => `
             <div class="col-12 col-sm-6 col-lg-3 product-card-container" data-aos="fade-up" data-aos-delay="${100 + (i % 4) * 100}">
                 <div class="card h-100 product-card border-0">
                     <button
@@ -425,7 +452,7 @@
                         </div>
                         <div class="d-flex gap-2 mt-auto">
                             <button class="add-to-cart-btn"
-                                onclick="addToCart('${it.id || ''}', '${(it.cartName || it.name).replace(/'/g,"\\'")}', ${it.price || 0})">
+                                onclick="addToCart('${it.id || ''}', '${(it.cartName || it.name).replace(/'/g, "\\'")}', ${it.price || 0})">
                                 <i class="fas fa-cart-plus"></i> أضف للسلة
                             </button>
                         </div>
@@ -434,56 +461,57 @@
             </div>
         `).join('');
 
-        // Refresh AOS for newly rendered cards
-        if (typeof AOS !== 'undefined') AOS.refresh();
-    }
-
-    // Remove a single item from wishlist (from within this page)
-    function removeFromWishlistPage(encodedTitle, btn) {
-        const title = decodeURIComponent(encodedTitle);
-        let wl = [];
-        try {
-            wl = JSON.parse(localStorage.getItem('moharram_wishlist')) || [];
-        } catch(e) {}
-        wl = wl.filter(i => i && (i.title !== title && i.name !== title));
-        localStorage.setItem('moharram_wishlist', JSON.stringify(wl));
-
-        // Animate card out
-        const card = btn.closest('.col-12');
-        if (card) {
-            card.style.transition = 'opacity 0.3s, transform 0.3s';
-            card.style.opacity = '0';
-            card.style.transform = 'scale(0.9)';
-            setTimeout(() => {
-                card.remove();
-                renderWishlistPageFull(); // re-render (handles empty state)
-            }, 300);
+            // Refresh AOS for newly rendered cards
+            if (typeof AOS !== 'undefined') AOS.refresh();
         }
 
-        // Sync global variable and counter
-        wishlist = wl;
-        updateWishlistCount();
-        showToast('تم إزالة المنتج من المفضلة', 'error');
-    }
+        // Remove a single item from wishlist (from within this page)
+        function removeFromWishlistPage(encodedTitle, btn) {
+            const title = decodeURIComponent(encodedTitle);
+            let wl = [];
+            try {
+                wl = JSON.parse(localStorage.getItem('moharram_wishlist')) || [];
+            } catch (e) { }
+            wl = wl.filter(i => i && (i.title !== title && i.name !== title));
+            localStorage.setItem('moharram_wishlist', JSON.stringify(wl));
 
-    // Add all wishlist items to cart at once
-    function addAllToCart() {
-        let wl = [];
-        try {
-            wl = JSON.parse(localStorage.getItem('moharram_wishlist')) || [];
-        } catch(e) {}
-        if (!wl.length) return;
-        wl.forEach(it => {
-            if (it && it.price) addToCart(it.id || '', it.cartName || it.name, it.price);
+            // Animate card out
+            const card = btn.closest('.col-12');
+            if (card) {
+                card.style.transition = 'opacity 0.3s, transform 0.3s';
+                card.style.opacity = '0';
+                card.style.transform = 'scale(0.9)';
+                setTimeout(() => {
+                    card.remove();
+                    renderWishlistPageFull(); // re-render (handles empty state)
+                }, 300);
+            }
+
+            // Sync global variable and counter
+            wishlist = wl;
+            updateWishlistCount();
+            showToast('تم إزالة المنتج من المفضلة', 'error');
+        }
+
+        // Add all wishlist items to cart at once
+        function addAllToCart() {
+            let wl = [];
+            try {
+                wl = JSON.parse(localStorage.getItem('moharram_wishlist')) || [];
+            } catch (e) { }
+            if (!wl.length) return;
+            wl.forEach(it => {
+                if (it && it.price) addToCart(it.id || '', it.cartName || it.name, it.price);
+            });
+            showToast('✅ تمت إضافة كل المفضلة للسلة!', 'success');
+        }
+
+        // Run on page load — after script.js initializes
+        document.addEventListener('DOMContentLoaded', function () {
+            renderWishlistPageFull();
         });
-        showToast('✅ تمت إضافة كل المفضلة للسلة!', 'success');
-    }
-
-    // Run on page load — after script.js initializes
-    document.addEventListener('DOMContentLoaded', function () {
-        renderWishlistPageFull();
-    });
     </script>
 
 </body>
+
 </html>

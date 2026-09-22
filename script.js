@@ -1,6 +1,32 @@
 // ── Supabase Config (read-only for discount codes) ──
-const _SB_URL  = 'https://hhqofygrjnbnnozrxxld.supabase.co';
-const _SB_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhocW9meWdyam5ibm5venJ4eGxkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM5NTA1MzgsImV4cCI6MjA5OTUyNjUzOH0.C0djcvWYWWAtV0rEy3PUO3oAFT38amhbSDeuwejIS3o';
+const _SB_URL = 'https://hhqofygrjnbnnozrxxld.supabase.co';
+const _SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhocW9meWdyam5ibm5venJ4eGxkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM5NTA1MzgsImV4cCI6MjA5OTUyNjUzOH0.C0djcvWYWWAtV0rEy3PUO3oAFT38amhbSDeuwejIS3o';
+
+function toggleMainNav() {
+    const nav = document.getElementById('mainNav');
+    const overlay = document.getElementById('mobileNavOverlay');
+    const toggle = document.querySelector('.navbar-toggler');
+    const isOpen = nav.classList.toggle('open');
+
+    overlay.classList.toggle('open', isOpen);
+    toggle.classList.toggle('is-open', isOpen);
+    toggle.setAttribute('aria-expanded', String(isOpen));
+    toggle.setAttribute('aria-label', isOpen ? 'إغلاق القائمة' : 'فتح القائمة');
+    toggle.querySelector('span').className = isOpen ? 'fas fa-times' : 'navbar-toggler-icon';
+}
+
+function closeMainNav() {
+    const nav = document.getElementById('mainNav');
+    const overlay = document.getElementById('mobileNavOverlay');
+    const toggle = document.querySelector('.navbar-toggler');
+
+    nav.classList.remove('open');
+    overlay.classList.remove('open');
+    toggle.classList.remove('is-open');
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-label', 'فتح القائمة');
+    toggle.querySelector('span').className = 'navbar-toggler-icon';
+}
 
 let cart = [];
 let wishlist = [];
@@ -180,7 +206,7 @@ function updateSummary() {
     let discAmt = 0;
     if (discountType === 'percent') discAmt = rawTotal * discountValue;
     else if (discountType === 'fixed') discAmt = Math.min(discountValue, rawTotal);
-    
+
     const afterDisc = rawTotal - discAmt;
     const gov = document.getElementById('governorate');
     let ship = gov && gov.value ? parseInt(gov.value) : 0;
@@ -547,6 +573,10 @@ function sendContactMsg(e) {
 
 /* ---- INITIALIZATION ---- */
 document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll('#mainNav a').forEach(link => {
+        link.addEventListener('click', closeMainNav);
+    });
+
     if (typeof AOS !== 'undefined') {
         AOS.init({
             duration: 800,
@@ -778,7 +808,7 @@ function renderDynamicProducts() {
     const wrapper = document.getElementById('products-dynamic-wrapper');
     if (!wrapper) return;
 
-    const activeProducts = allProducts.filter(function(p) { return p.is_active !== false; });
+    const activeProducts = allProducts.filter(function (p) { return p.is_active !== false; });
     if (!activeProducts.length) {
         wrapper.innerHTML = '<div class="text-center py-5"><p>لا توجد منتجات متاحة حالياً.</p></div>';
         return;
@@ -797,16 +827,16 @@ function renderDynamicProducts() {
     const allBtn = document.createElement('button');
     allBtn.className = 'filter-tab active bg-brown-dark text-white';
     allBtn.textContent = 'الكل';
-    allBtn.onclick = function() { filterCat('all', this); };
+    allBtn.onclick = function () { filterCat('all', this); };
     tabsRow.appendChild(allBtn);
 
-    allCategories.forEach(function(cat) {
-        const catProds = allProducts.filter(function(p) { return p.category_id === cat.id && p.is_active !== false; });
+    allCategories.forEach(function (cat) {
+        const catProds = allProducts.filter(function (p) { return p.category_id === cat.id && p.is_active !== false; });
         if (!catProds.length) return;
         const btn = document.createElement('button');
         btn.className = 'filter-tab';
         btn.textContent = (cat.emoji || '') + ' ' + (cat.slug || cat.name);
-        btn.onclick = function() { filterCat(cat.slug, this); };
+        btn.onclick = function () { filterCat(cat.slug, this); };
         tabsRow.appendChild(btn);
     });
 
@@ -814,8 +844,8 @@ function renderDynamicProducts() {
     wrapper.appendChild(tabsContainer);
 
     // === CATEGORY SECTIONS ===
-    allCategories.forEach(function(cat) {
-        const catProds = allProducts.filter(function(p) { return p.category_id === cat.id && p.is_active !== false; });
+    allCategories.forEach(function (cat) {
+        const catProds = allProducts.filter(function (p) { return p.category_id === cat.id && p.is_active !== false; });
         if (!catProds.length) return;
 
         const header = document.createElement('div');
@@ -826,19 +856,19 @@ function renderDynamicProducts() {
 
         const row = document.createElement('div');
         row.className = 'row g-4';
-        catProds.forEach(function(p, idx) {
+        catProds.forEach(function (p, idx) {
             row.appendChild(buildProductCard(p, cat.slug, idx));
         });
         wrapper.appendChild(row);
     });
 
     // Re-apply wishlist states
-    document.querySelectorAll('.product-card').forEach(function(card) {
+    document.querySelectorAll('.product-card').forEach(function (card) {
         const titleEl = card.querySelector('.product-title');
         if (!titleEl) return;
         const name = titleEl.innerText;
         const cardId = card.dataset.id;
-        if (wishlist.some(function(i) { return i && ((i.id && i.id == cardId) || (!i.id && (i.title === name || i.name === name))); })) {
+        if (wishlist.some(function (i) { return i && ((i.id && i.id == cardId) || (!i.id && (i.title === name || i.name === name))); })) {
             const btn = card.querySelector('.wishlist-btn');
             if (btn) {
                 const ic = btn.querySelector('i');
@@ -887,7 +917,7 @@ function buildProductCard(p, dataCat, index) {
         const img = document.createElement('img');
         img.src = p.image_url;
         img.alt = p.name;
-        img.onerror = function() {
+        img.onerror = function () {
             imgWrap.innerHTML = '<span class="ph-icon">' + fallback + '</span>';
         };
         imgWrap.appendChild(img);
@@ -979,7 +1009,7 @@ function toggleWishDirect(btn, id, name, price, img, cat) {
     }
     localStorage.setItem('moharram_wishlist', JSON.stringify(wishlist));
     if (typeof updateWishlistCount === 'function') updateWishlistCount();
-    
+
     // update state in page if needed
     if (typeof renderDynamicProducts === 'function' && document.getElementById('products-dynamic-wrapper')) {
         renderDynamicProducts();
@@ -992,20 +1022,20 @@ function toggleWishDirect(btn, id, name, price, img, cat) {
 function performSearch() {
     const q = document.getElementById('searchInput').value.trim().toLowerCase();
     const resultsContainer = document.getElementById('searchResults');
-    
+
     if (!q) {
         resultsContainer.innerHTML = '<div class="text-center text-muted py-4">اكتب اسم المنتج للبحث</div>';
         return;
     }
-    
+
     const activeProducts = allProducts.filter(p => p.is_active !== false);
     const matches = activeProducts.filter(p => p.name.toLowerCase().includes(q) || (p.description && p.description.toLowerCase().includes(q)));
-    
+
     if (!matches.length) {
         resultsContainer.innerHTML = '<div class="text-center text-muted py-4">لم يتم العثور على منتجات مطابقة</div>';
         return;
     }
-    
+
     resultsContainer.innerHTML = matches.map(p => {
         const catName = p.categories ? p.categories.name : '';
         const img = p.image_url ? `<img src="${p.image_url}" class="rounded object-fit-cover shadow-sm border" style="width: 80px; height: 80px;" alt="${p.name}">` : `<div class="rounded bg-light d-flex align-items-center justify-content-center shadow-sm border" style="width:80px; height:80px; font-size:24px;">🍯</div>`;
@@ -1023,13 +1053,13 @@ function performSearch() {
                             <i class="fas fa-cart-plus me-1"></i> سلة
                         </button>
                         ${(() => {
-                            const isWished = wishlist.some(i => i.id == p.id || i.name == p.name);
-                            const wishBtnClass = isWished ? 'btn-danger' : 'btn-outline-danger';
-                            const wishIcon = isWished ? 'fas' : 'far';
-                            return `<button class="btn btn-sm ${wishBtnClass} rounded-pill px-3 fw-bold" onclick="toggleWishDirect(this, '${p.id}', '${cartName}', ${p.price}, '${p.image_url || ''}', '${catName}')">
+                const isWished = wishlist.some(i => i.id == p.id || i.name == p.name);
+                const wishBtnClass = isWished ? 'btn-danger' : 'btn-outline-danger';
+                const wishIcon = isWished ? 'fas' : 'far';
+                return `<button class="btn btn-sm ${wishBtnClass} rounded-pill px-3 fw-bold" onclick="toggleWishDirect(this, '${p.id}', '${cartName}', ${p.price}, '${p.image_url || ''}', '${catName}')">
                                 <i class="${wishIcon} fa-heart me-1"></i> مفضلة
                             </button>`;
-                        })()}
+            })()}
                     </div>
                 </div>
             </div>
@@ -1037,6 +1067,6 @@ function performSearch() {
     }).join('');
 }
 
-window.addEventListener('load', function() {
+window.addEventListener('load', function () {
     loadStoreData();
 });

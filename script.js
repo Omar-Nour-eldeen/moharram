@@ -644,12 +644,17 @@ if (canvas) {
 
     ctx.font = FONT;
     let itemWidths = [];
+    let relRight = [];
     let segW = 0;
 
     function recalc() {
         ctx.font = FONT;
         itemWidths = items.map(t => ctx.measureText(t).width);
-        segW = itemWidths.reduce((a, b) => a + b, 0) + GAP * items.length;
+        relRight = [0];
+        for (let i = 1; i < items.length; i++) {
+            relRight[i] = relRight[i - 1] - itemWidths[i - 1] - GAP;
+        }
+        segW = -(relRight[items.length - 1] - itemWidths[items.length - 1] - GAP);
     }
     recalc();
 
@@ -665,16 +670,17 @@ if (canvas) {
         ctx.font = FONT;
         ctx.fillStyle = FG;
         ctx.textBaseline = 'middle';
+        ctx.direction = 'rtl';
+        ctx.textAlign = 'right';
 
-        let offset = (x % segW) - segW;
-
-        while (offset < W) {
-            let cx = offset;
+        let startBase = (x % segW) - 2 * segW;
+        for (let baseX = startBase; baseX < W + 2 * segW; baseX += segW) {
             for (let i = 0; i < items.length; i++) {
-                ctx.fillText(items[i], cx, H / 2);
-                cx += itemWidths[i] + GAP;
+                const rightEdge = baseX + relRight[i];
+                if (rightEdge > 0 && rightEdge - itemWidths[i] < W) {
+                    ctx.fillText(items[i], rightEdge, H / 2);
+                }
             }
-            offset += segW;
         }
 
         x = (x + SPEED) % segW;

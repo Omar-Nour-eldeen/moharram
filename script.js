@@ -379,7 +379,7 @@ function filterCat(cat, btn) {
         }
     });
 
-    document.querySelectorAll('#products-dynamic-wrapper .row.g-4').forEach(row => {
+    document.querySelectorAll('#products-dynamic-wrapper .products-category-row, #products-dynamic-wrapper .row').forEach(row => {
         const visibleCards = row.querySelectorAll('.product-card-container:not(.d-none)');
         row.classList.toggle('d-none', visibleCards.length === 0);
     });
@@ -863,7 +863,7 @@ function renderDynamicProducts() {
         wrapper.appendChild(header);
 
         const row = document.createElement('div');
-        row.className = 'row g-4';
+        row.className = 'row g-2 g-sm-3 g-md-4 products-category-row';
         catProds.forEach(function (p, idx) {
             row.appendChild(buildProductCard(p, cat.slug, idx));
         });
@@ -893,7 +893,7 @@ function renderDynamicProducts() {
 
 function buildProductCard(p, dataCat, index) {
     const col = document.createElement('div');
-    col.className = 'col-12 col-sm-6 col-lg-3 product-card-container';
+    col.className = 'col-6 col-sm-6 col-lg-3 product-card-container';
     col.dataset.cat = dataCat;
 
     const isOffer = p.badge_type === 'offer';

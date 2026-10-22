@@ -988,6 +988,118 @@ footer {
     }
 }
 
+/* ===== MOBILE PRODUCT CARDS (2 PER ROW) ===== */
+@media (max-width: 576px) {
+    .product-card {
+        border-radius: 12px;
+    }
+
+    .product-image {
+        height: 145px;
+    }
+
+    .product-image .ph-icon {
+        font-size: 36px;
+    }
+
+    .product-body {
+        padding: 10px 8px !important;
+    }
+
+    .discount-tag,
+    .highlight-badge {
+        top: 6px;
+        right: 6px;
+        padding: 2px 7px;
+        font-size: 9px;
+    }
+
+    .highlight-badge {
+        left: 6px;
+        right: auto;
+    }
+
+    .product-category {
+        font-size: 9px;
+        margin-bottom: 2px;
+    }
+
+    .product-title {
+        font-size: 13px;
+        font-weight: 800;
+        line-height: 1.35;
+        margin-bottom: 4px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        min-height: 34px;
+    }
+
+    .product-desc {
+        font-size: 10.5px;
+        line-height: 1.4;
+        margin-bottom: 6px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        padding-top: 0 !important;
+    }
+
+    .product-price-row {
+        margin-bottom: 8px;
+        gap: 4px;
+        flex-wrap: wrap;
+    }
+
+    .product-price {
+        font-size: 14.5px;
+    }
+
+    .old-price {
+        font-size: 10.5px;
+    }
+
+    .price-unit {
+        font-size: 9.5px;
+    }
+
+    .product-body .d-flex.gap-2.mt-auto {
+        gap: 5px !important;
+    }
+
+    .add-to-cart-btn {
+        padding: 8px 6px;
+        font-size: 11px;
+        gap: 4px;
+        border-radius: 8px;
+        white-space: nowrap;
+    }
+
+    .add-to-cart-btn i {
+        font-size: 10px;
+    }
+
+    .wishlist-btn {
+        width: 34px;
+        height: 34px;
+        font-size: 13px;
+        border-radius: 8px;
+        flex-shrink: 0;
+    }
+
+    /* Wishlist page button adjustments on mobile */
+    .wishlist-btn.position-absolute {
+        top: 6px !important;
+        right: 6px !important;
+    }
+
+    .section-title {
+        font-size: 17px;
+    }
+}
+
 /* ===== MOBILE NAVBAR ===== */
 @media (max-width: 991.98px) {
     .navbar {

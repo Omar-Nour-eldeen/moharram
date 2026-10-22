@@ -145,7 +145,7 @@
         </div>
 
         <!-- Products Grid -->
-        <div id="wishlist-grid" class="row g-4"></div>
+        <div id="wishlist-grid" class="row g-2 g-sm-3 g-md-4"></div>
 
         <!-- Add all to cart button (shown when wishlist has items) -->
         <div id="wishlist-actions" class="text-center mt-5" style="display:none;" data-aos="fade-up">
@@ -430,7 +430,7 @@
             label.textContent = wl.length + ' منتج';
 
             grid.innerHTML = wl.map((it, i) => `
-            <div class="col-12 col-sm-6 col-lg-3 product-card-container" data-aos="fade-up" data-aos-delay="${100 + (i % 4) * 100}">
+            <div class="col-6 col-sm-6 col-lg-3 product-card-container" data-aos="fade-up" data-aos-delay="${100 + (i % 4) * 100}">
                 <div class="card h-100 product-card border-0">
                     <button
                         class="wishlist-btn active position-absolute"
